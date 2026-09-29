@@ -1,0 +1,49 @@
+---
+interface Props {
+  logo?: string;
+}
+
+const { logo = "SofiFund" } = Astro.props;
+const menuItems = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+---
+
+<header class="flex items-center justify-between w-full px-4 py-2.5">
+  <a href="/" class="flex items-center gap-2">
+    <img
+      class="logo__img object-contain"
+      src="/image/logo.webp"
+      alt="logo de SofiDev"
+      width="30"
+      height="30"
+    />
+    <div class="logo__container">
+      <h3 class="font-bold text-lg text-white">Sofi<span class="text-cyan-400">Dev</span></h3>
+
+    </div>
+  </a>
+  <nav class="flex items-center justify-between">
+    <ul class="flex items-center justify-cendter gap-2">
+      {
+        menuItems.map((item) => (
+          <li>
+            <a class="text-white hover:text-violet-500 transition-colors" href={item.href}>{item.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <div class="flex items-center gap-2">
+    <a
+      class="bg-violet-600/30 text-violet-400 px-4 py-1 rounded-sm hover:text-white hover:bg-violet-500 transition-colors"
+      href="/login">login</a
+    >
+    <a
+      class="bg-violet-800 text-white px-4 py-1 rounded-sm hover:bg-violet-600 transition-colors shadow-2xl shadow-violet-500"
+      href="/register">register</a
+    >
+  </div>
+</header>

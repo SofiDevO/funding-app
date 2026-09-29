@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  --color-background-body: #09060c;
+  --color-background-before: #0c0912;
+  --color-gradient1-start: rgba(63, 5, 157, 0.3);
+  --color-gradient1-end: rgba(64, 8, 149, 0);
+  --color-gradient2-start: rgba(77, 8, 173, 0.5);
+  --color-gradient2-middle: rgba(74, 7, 182, 0.4);
+  --color-gradient2-end: rgba(87, 14, 196, 0);
+  --color-gradient3-start: rgba(90, 17, 155, 0.2);
+  --color-gradient3-middle: rgba(64, 5, 131, 0.1);
+  --color-gradient3-end: rgba(70, 13, 144, 0);
+  --color-gradient4-start: rgba(52, 0, 124, 0.075);
+  --color-gradient4-end: rgba(52, 0, 124, 0.05);
+  --color-background-gradient5: #0d0b13;
+  --color-gradient6-start: rgba(21, 2, 58, 0.5);
+  --color-background-gradient6: #100223;
+  --color-background-after: #17131c;
+}
+
+body{
+  overflow-x: hidden;
+  background: #090c12;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

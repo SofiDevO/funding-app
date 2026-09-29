@@ -1,0 +1,29 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: "website" | "article" | "profile";
+}
+
+const {
+  title,
+  description = "",
+  image = "/og-default.png",
+  url = Astro.url.href,
+  type = "website",
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead {title} {description} {image} {url} {type} />
+    <slot name="head" />
+  </head>
+  <body class="">
+    <slot />
+  </body>
+</html>

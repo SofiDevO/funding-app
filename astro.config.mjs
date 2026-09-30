@@ -5,9 +5,14 @@ import path from "node:path";
 import cloudflare from '@astrojs/cloudflare';
 import tailwindcss from '@tailwindcss/vite';
 
+import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
   adapter: cloudflare(),
+  site: "https://funding.sofidev.top/",
+
+
   vite: {
     plugins: [tailwindcss()],
     resolve: {
@@ -17,10 +22,24 @@ export default defineConfig({
         "@layouts": path.resolve("./src/layouts"),
         "@pages": path.resolve("./src/pages"),
         "@styles": path.resolve("./src/styles"),
-        "@sass": path.resolve("./src/sass"),
-        "@data": path.resolve("./src/data"),
+        "@infrastructure": path.resolve("./src/infrastructure"),
+        "@types": path.resolve("./src/types"),
         "@controllers": path.resolve("./src/controllers"),
       },
-    }
-  }
+    },
+
+
+  },
+
+  integrations: [sitemap({
+      filter: (page) =>
+        !page.includes("/login"),
+      serialize: (item) => {
+        return {
+          url: item.url,
+          changefreq: ChangeFreqEnum.DAILY,
+          priority: 0.8,
+        };
+      },
+    }),]
 });

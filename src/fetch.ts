@@ -1,9 +1,10 @@
-import {Hono} from 'hono';
-import {logger} from 'hono/logger';
-import {cors} from 'hono/cors';
-import {actions, middleware, pages, i18n} from 'astro/hono';
+import { Hono } from 'hono';
+import { logger } from 'hono/logger';
+import { cors } from 'hono/cors';
+import { actions, middleware, pages, i18n, sessions } from 'astro/hono';
+import { env } from 'cloudflare:workers';
 
-// import { getDB } from "./infrastructure/database/d1-connection"
+import { getDB } from "./infrastructure/database/d1-connection"
 import { R2Storage } from "./infrastructure/storage/R2-storage"
 import type { R2Bucket } from '@cloudflare/workers-types';
 
@@ -16,12 +17,13 @@ app.use('*', logger());
 app.use('/api/*', cors());
 
 app.use("/*", async (c, next) => {
-//   c.set("db", getDB(c))
-  c.set("r2", new R2Storage(c.env.IMAGES as unknown as R2Bucket, c.env.R2_PUBLIC_URL))
+  c.set("db", getDB({ env }))
+  c.set("r2", new R2Storage(env.IMAGES as unknown as R2Bucket, env.R2_PUBLIC_URL))
   await next()
 })
 
 
+app.use(sessions());
 app.use(actions());
 app.use(middleware());
 app.use(pages());

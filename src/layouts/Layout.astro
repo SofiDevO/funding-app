@@ -1,8 +1,10 @@
 ---
+import GradientBg from "@/components/gradient-bg/GradientBg.astro";
 import BaseHead from "../components/BaseHead.astro";
 
+
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
   image?: string;
   url?: string;
@@ -11,7 +13,7 @@ interface Props {
 
 const {
   title,
-  description = "",
+  description,
   image = "/og-default.png",
   url = Astro.url.href,
   type = "website",
@@ -20,10 +22,12 @@ const {
 
 <html lang="en">
   <head>
-    <BaseHead {title} {description} {image} {url} {type} />
+    <BaseHead  {description} {image}  />
     <slot name="head" />
   </head>
-  <body class="">
-    <slot />
-  </body>
+  <GradientBg>
+    <body class="">
+      <slot />
+    </body>
+  </GradientBg>
 </html>

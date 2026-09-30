@@ -18,6 +18,8 @@
       "@assets": ["./src/assets"],
       "@scripts": ["./src/scripts"],
       "@styles": ["./src/styles"],
+      "@types": ["./src/types"],
+      "@infrastructure": ["./src/infrastructure"],
       "@lib": ["./src/lib"]
     }
   }

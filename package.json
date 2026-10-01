@@ -7,6 +7,8 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "infisical:pull": "infisical export --env=prod --format=dotenv --output-file=.dev.vars && wrangler dev --port 8787",
+    "infisical:push": "infisical secrets set --file=./.dev.vars --env=prod",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

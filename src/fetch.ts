@@ -12,13 +12,14 @@ import type { R2Bucket } from '@cloudflare/workers-types';
 import type { AppEnv } from "./types/env";
 
 const app = new Hono<AppEnv>();
+const workerEnv = env as Cloudflare.Env;
 
 app.use('*', logger());
 app.use('/api/*', cors());
 
 app.use("/*", async (c, next) => {
   c.set("db", getDB({ env }))
-  c.set("r2", new R2Storage(env.IMAGES as unknown as R2Bucket, env.R2_PUBLIC_URL))
+  c.set("r2", new R2Storage(workerEnv.R2_BUCKET as unknown as R2Bucket, workerEnv.R2_PUBLIC_URL))
   await next()
 })
 

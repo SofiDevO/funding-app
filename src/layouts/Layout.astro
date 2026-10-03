@@ -1,7 +1,7 @@
 ---
 import GradientBg from "@/components/gradient-bg/GradientBg.astro";
 import BaseHead from "../components/BaseHead.astro";
-
+import Header from "@/components/Header.astro";
 
 interface Props {
   title?: string;
@@ -22,12 +22,15 @@ const {
 
 <html lang="en">
   <head>
-    <BaseHead  {description} {image}  />
+    <BaseHead {description} {image} />
     <slot name="head" />
   </head>
   <GradientBg>
     <body class="">
-      <slot />
+      <GradientBg>
+        <Header />
+        <slot />
+      </GradientBg>
     </body>
   </GradientBg>
 </html>

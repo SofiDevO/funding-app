@@ -1,10 +1,28 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-
-
+import Form from "@/components/shared/form/Form.astro";
+import FormInput from "@/components/shared/form/FormInput.astro";
 ---
 
-<Layout>
-
-
+<Layout title="Inicia sesión" description="Accede a tu cuenta" >
+  <main class="flex flex-col w-full h-full">
+      <div
+      class="flex flex-col items-center justify-center w-full h-full min-h-screen gap-4"
+      >
+      <h1 class="text-2xl font-bold text-amethyst-500">Iniciar sesión</h1>
+      <Form action="/login" novalidate>
+        <FormInput name="username" type="text" label="Username or email" />
+        <FormInput name="password" type="password" label="Password" />
+      </Form>
+      <p class="text-amethyst-300 flex items-center gap-2 text-sm">
+        ¿No tienes cuenta?
+        <a
+          href="/register"
+          class="text-amethyst-500 hover:text-amethyst-400 hover:underline hover:underline-offset-2 transition-colors duration-300"
+        >
+          Regístrate aquí
+        </a>
+      </p>
+    </div>
+  </main>
 </Layout>

@@ -1,0 +1,51 @@
+---
+interface Props {
+  name: string;
+  type: "text" | "email" | "password";
+  label?: string;
+}
+
+const { name, type, label } = Astro.props;
+---
+
+<div
+  class="flex flex-col w-fit items-start justify-center bg-amethyst-50 rounded-sm h-13 py-3 px-2 relative gap-2"
+>
+  <label for={name} class="label text-slate-600">
+    {label || name}
+  </label>
+  <input
+    pattern="\S+.*"
+    required
+    id={name}
+    type={type}
+    name={name}
+    class="input outline-0 border-0 ring-0 text-md"
+  />
+</div>
+
+<style is:inline>
+  .label{
+    pointer-events: none;
+    margin-bottom: 0.5rem;
+    position: absolute;
+    font-weight: 500;
+    transform: translateY(3px);
+    font-size: .9rem;
+    transition:
+      translate 0.3s ease-in-out,
+      font-size 0.3s ease-in-out,
+      color 0.3s ease-in-out;
+    &:has(+ .input:focus, + .input:valid) {
+      transform: translateY(-14px);
+      font-size: 0.8rem;
+      color: var(--color-amethyst-600);
+    }
+
+  }
+  .input {
+    &:focus {
+      border-bottom: 2px solid #9b5de5;
+    }
+  }
+</style>

@@ -21,7 +21,7 @@ app.use("/*", async (c, next) => {
   c.set("db", getDB({ env }))
   c.set("r2", new R2Storage(workerEnv.R2_BUCKET as unknown as R2Bucket, workerEnv.R2_PUBLIC_URL))
   await next()
-})
+});
 
 
 app.use(sessions());

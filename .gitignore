@@ -29,3 +29,4 @@ wrangler.jsonc
 
 # wrangler local state
 .wrangler/
+key.pem

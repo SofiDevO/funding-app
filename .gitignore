@@ -26,3 +26,6 @@ pnpm-debug.log*
 wrangler.jsonc
 
 .dev.vars
+
+# wrangler local state
+.wrangler/

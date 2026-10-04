@@ -143,6 +143,11 @@ import thumbnail from "@image/goal.png"
     const goalId = form.dataset.goalId ?? "";
 
     function updateFeePreview() {
+      if (errorP && !errorP.hidden) {
+        errorP.hidden = true;
+        errorP.textContent = "";
+      }
+
       const net = parseFloat(amountInput?.value ?? "0");
       if (!net || net < 1) {
         if (feeSpan) feeSpan.textContent = "";

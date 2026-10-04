@@ -5,7 +5,6 @@ on:
       - main
 permissions:
   contents: read
-  workers-and-pages: write
 jobs:
   deploy:
     runs-on: ubuntu-latest

@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import Form from "@/components/shared/form/Form.astro";
 import FormInput from "@/components/shared/form/FormInput.astro";
+import Title from "@/components/shared/Title.astro";
 ---
 
 <Layout title="Inicia sesión" description="Accede a tu cuenta" >
@@ -9,8 +10,8 @@ import FormInput from "@/components/shared/form/FormInput.astro";
       <div
       class="flex flex-col items-center justify-center w-full h-full min-h-screen gap-4"
       >
-      <h1 class="text-2xl font-bold text-amethyst-500">Iniciar sesión</h1>
-      <Form action="/login" novalidate>
+      <Title as="h2" title="Iniciar sesión" isGradient={true} />
+      <Form action="/login" novalidate class=" max-w-100">
         <FormInput name="username" type="text" label="Username or email" />
         <FormInput name="password" type="password" label="Password" />
       </Form>

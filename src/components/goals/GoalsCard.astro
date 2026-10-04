@@ -14,23 +14,27 @@ const { id, title, excerpt, targetAmount, currentAmount, image } = Astro.props;
 const progress = (currentAmount / targetAmount) * 100;
 const suggestedAmounts = SUGGESTED_AMOUNTS;
 import Title from "@/components/shared/Title.astro";
+
+import { Image } from 'astro:assets';
+import thumbnail from "@image/goal.png"
+
 ---
 
 <article
-  class="flex flex-col rounded-xl bg-amethyst-100 w-full h-full  p-4"
+  class="flex flex-col rounded-xl bg-amethyst-100 w-full h-full  p-3"
 >
   <div class="flex flex-col md:flex-row items-center gap-10 w-full">
     <div
       class="w-full min-w-30  md:max-w-40 h-full max-h-60 rounded-2xl overflow-hidden shadow-amethyst-800/40 shadow-lg"
     >
-      <img src={image} alt={title} class="w-full h-full object-contain md:object-cover" />
+      <Image src={thumbnail} alt={title} class="w-full h-full object-contain md:object-cover" />
     </div>
-    <div class="flex flex-col items-start gap-3">
+    <div class="flex flex-col items-start gap-2">
       <Title as="h3" title={title} class="font-bold text-2xl text-left" />
 
       <p class="text-gray-600">{excerpt}</p>
       <div class="flex flex-col">
-        <label class="font-bold text-amethyst-500" for={`amount-${id}`}
+        <label class="font-bold text-amethyst-500 text-sm" for={`amount-${id}`}
           >{progress.toFixed()}%</label
         >
         <progress id={`amount-${id}`} max="100" value={progress}>
@@ -46,13 +50,13 @@ import Title from "@/components/shared/Title.astro";
       >
         <input type="hidden" name="goalId" value={id} />
 
-        <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex items-center gap-1 flex-wrap text-sm font-bold ">
           {
             suggestedAmounts.map((amount) => (
               <button
                 type="button"
                 data-amount={amount}
-                class="bg-amethyst-500 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+                class="bg-amethyst-500 text-white px-3 py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
               >
                 ${amount}
               </button>
@@ -60,12 +64,13 @@ import Title from "@/components/shared/Title.astro";
           }
           <input
             type="number"
+            id={`amount-input-${id}`}
             name="amount"
             min="1"
-            step="0.01"
-            placeholder="Monto libre"
+            step="1"
+            placeholder="Otra cantidad"
             aria-label="Monto libre en dólares"
-            class="border border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
+            class="border border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none shadow-amethyst-500 shadow-sm focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
           />
         </div>
 
@@ -76,7 +81,7 @@ import Title from "@/components/shared/Title.astro";
             data-cover-fees
             class="accent-amethyst-500 cursor-pointer "
           />
-          Cubrir comisión de Lemon Squeezy para que el creador reciba el monto total
+          Cubrir comisión de Lemon Squeezy
           <span data-fee class="font-bold text-amethyst-500"></span>
         </label>
 
@@ -86,17 +91,17 @@ import Title from "@/components/shared/Title.astro";
         <div class="flex items-center gap-4 w-full mt-auto">
           <button
             type="submit"
-            class="flex items-center gap-2 font-bold bg-amethyst-500 w-fit text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
+            class="flex items-center gap-2 font-bold bg-amethyst-500 w-fit text-white text-sm px-3  py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
           >
             Donar
             <iconify-icon
-              width="20"
-              height="20"
+              width="15"
+              height="15"
               icon="ant-design:heart-twotone"
               style="fill:#ff1e6c; color: #ff1e6c;"></iconify-icon>
           </button>
           <a
-            class="bg-amethyst-800 text-white px-4 py-2 rounded-md hover:bg-amethyst-700 transition-colors cursor-pointer"
+            class="bg-amethyst-800 text-white text-sm px-3 py-1 rounded-md hover:bg-amethyst-700 transition-colors cursor-pointer"
             href={`/goals/${id}`}>Ver detalles</a
           >
         </div>
@@ -115,4 +120,96 @@ import Title from "@/components/shared/Title.astro";
     border-radius: 5px;
     background-color: var(--color-amethyst-700);
   }
+  /* ::-webkit-inner-spin-button, ::-webkit-outer-spin-button{
+    display: none;
+  } */
 </style>
+
+<script>
+  // Mirror of src/lib/fees.ts — must stay in sync
+  const LS_FEE_RATE = 0.05;
+  const LS_FEE_FIXED = 0.50;
+
+  function grossUpFees(net: number): number {
+    return Math.ceil(((net + LS_FEE_FIXED) / (1 - LS_FEE_RATE)) * 100) / 100;
+  }
+
+  document.querySelectorAll<HTMLFormElement>("[data-donation-form]").forEach((form) => {
+    const amountInput = form.querySelector<HTMLInputElement>("input[name='amount']");
+    const coverFeesCheckbox = form.querySelector<HTMLInputElement>("[data-cover-fees]");
+    const feeSpan = form.querySelector<HTMLElement>("[data-fee]");
+    const totalP = form.querySelector<HTMLElement>("[data-total]");
+    const errorP = form.querySelector<HTMLElement>("[data-form-error]");
+    const goalId = form.dataset.goalId ?? "";
+
+    function updateFeePreview() {
+      const net = parseFloat(amountInput?.value ?? "0");
+      if (!net || net < 1) {
+        if (feeSpan) feeSpan.textContent = "";
+        if (totalP) { totalP.textContent = ""; totalP.hidden = true; }
+        return;
+      }
+
+      if (coverFeesCheckbox?.checked) {
+        const gross = grossUpFees(net);
+        const fee = (gross - net).toFixed(2);
+        if (feeSpan) feeSpan.textContent = ` (+$${fee})`;
+        if (totalP) { totalP.textContent = `Total cobrado: $${gross.toFixed(2)}`; totalP.hidden = false; }
+      } else {
+        if (feeSpan) feeSpan.textContent = "";
+        if (totalP) { totalP.hidden = true; totalP.textContent = ""; }
+      }
+    }
+
+    // Amount buttons → fill input + update preview
+    form.querySelectorAll<HTMLButtonElement>("button[data-amount]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!amountInput) return;
+        amountInput.value = btn.dataset.amount ?? "";
+        amountInput.focus();
+        updateFeePreview();
+      });
+    });
+
+    amountInput?.addEventListener("input", updateFeePreview);
+    coverFeesCheckbox?.addEventListener("change", updateFeePreview);
+
+    // Submit via fetch
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (errorP) { errorP.hidden = true; errorP.textContent = ""; }
+
+      const net = parseFloat(amountInput?.value ?? "0");
+
+      if (!net || net < 1) {
+        if (errorP) { errorP.textContent = "Ingresa un monto de al menos $1."; errorP.hidden = false; }
+        amountInput?.focus();
+        return;
+      }
+
+      const coverFees = coverFeesCheckbox?.checked ?? false;
+
+      try {
+        const res = await fetch("/api/donations/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ goalId, amount: net, coverFees }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error((data as { error?: string }).error ?? `Error ${res.status}`);
+        }
+
+        const { url } = await res.json() as { url: string };
+        window.location.href = url;
+      } catch (err) {
+        if (errorP) {
+          errorP.textContent = err instanceof Error ? err.message : "Ocurrio un error. Intenta de nuevo.";
+          errorP.hidden = false;
+        }
+      }
+    });
+  });
+</script>

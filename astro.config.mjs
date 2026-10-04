@@ -17,7 +17,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     resolve: {
       alias: {
-        "@src": path.resolve("./src"),
+        "@src": path.resolve("./*"),
         "@components": path.resolve("./src/components"),
         "@layouts": path.resolve("./src/layouts"),
         "@pages": path.resolve("./src/pages"),
@@ -25,6 +25,7 @@ export default defineConfig({
         "@infrastructure": path.resolve("./src/infrastructure"),
         "@types": path.resolve("./src/types"),
         "@controllers": path.resolve("./src/controllers"),
+        "@image": path.resolve("./public/image")
       },
     },
 

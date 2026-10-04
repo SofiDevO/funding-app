@@ -14,7 +14,7 @@ import goals from "@/data/goals.json";
           <GoalsCard
             id={goal.id}
             title={goal.title}
-            description={goal.description ?? ""}
+            excerpt={goal.excerpt}
             targetAmount={goal.target_amount}
             currentAmount={goal.current_amount ?? 0}
             image={goal.image_url ?? "/image/goal.png"}

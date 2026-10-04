@@ -1,8 +1,10 @@
 ---
+import { SUGGESTED_AMOUNTS } from "@/consts";
+
 interface Props {
-  id: number;
+  id: string;
   title: string;
-  description: string;
+  excerpt: string;
   targetAmount: number;
   currentAmount: number;
   image: string;
@@ -11,13 +13,13 @@ interface Props {
 const {
   id,
   title,
-  description,
+  excerpt,
   targetAmount,
   currentAmount,
   image,
 } = Astro.props;
 const progress = (currentAmount / targetAmount) * 100;
-const suggestedAmounts = [10, 20, 30];
+const suggestedAmounts = SUGGESTED_AMOUNTS;
 ---
 
 <article
@@ -31,7 +33,7 @@ const suggestedAmounts = [10, 20, 30];
     </div>
     <div class="flex flex-col items-start gap-3">
       <h2 class="font-bold text-2xl">{title}</h2>
-      <p class="text-gray-600">{description}</p>
+      <p class="text-gray-600">{excerpt}</p>
 
       <label class="font-bold text-amethyst-500" for={`amount-${id}`}
         >{progress.toFixed()}%</label
@@ -53,7 +55,7 @@ const suggestedAmounts = [10, 20, 30];
         }
         <input
           type="number"
-          placeholder="Custom amount"
+          placeholder="Monto libre"
           class="border border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
         />
       </div>

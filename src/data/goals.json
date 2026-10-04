@@ -1,8 +1,10 @@
 [
   {
-    "id": 1,
+    "id": "2b4ef887-8769-4985-b3e2-e1a895897ed0",
     "title": "Sofi emparedado",
-    "description": "Recaudar $10,000 para comprar un emparedado",
+    "excerpt": "Recaudar $10,000 para comprar un emparedado",
+    "description": "Recaudar $10,000 para comprar un emparedado. La meta incluye el equipo necesario para prepararlo durante todo el mes.",
+    "rewards": ["Mencion en el proximo video", "Sticker digital exclusivo"],
     "image_url": "/image/goal.png",
     "product_url": null,
     "target_amount": 10000,
@@ -12,9 +14,11 @@
     "updated_at": "2026-10-01 14:15:00"
   },
   {
-    "id": 2,
+    "id": "811e6d66-7258-4bf6-89f7-c2d9f7f632ca",
     "title": "Libros para estudiar",
-    "description": "Ayuda a completar una colección de libros de estudio",
+    "excerpt": "Ayuda a completar una colección de libros de estudio",
+    "description": "Ayuda a completar una colección de libros de estudio para el proximo ciclo academico.",
+    "rewards": ["Agradecimiento en redes", "PDF con la lista de lectura"],
     "image_url": "/image/goal.png",
     "product_url": null,
     "target_amount": 15000,
@@ -24,9 +28,11 @@
     "updated_at": "2026-10-02 16:40:00"
   },
   {
-    "id": 3,
+    "id": "93e8247f-5c22-46a8-883f-5f92792e25e9",
     "title": "Bicicleta para ir al trabajo",
-    "description": "Recaudación para comprar una bicicleta urbana",
+    "excerpt": "Recaudación para comprar una bicicleta urbana",
+    "description": "Recaudación para comprar una bicicleta urbana y reducir el tiempo de traslado diario.",
+    "rewards": ["Saludo en el stream", "Fondo de pantalla exclusivo"],
     "image_url": "/image/goal.png",
     "product_url": null,
     "target_amount": 25000,
@@ -36,9 +42,11 @@
     "updated_at": "2026-10-02 10:20:00"
   },
   {
-    "id": 4,
+    "id": "e74cfb16-1075-4704-bdd3-673b5c19aba4",
     "title": "Huerto comunitario",
-    "description": "Compra semillas y herramientas para el huerto del barrio",
+    "excerpt": "Compra semillas y herramientas para el huerto del barrio",
+    "description": "Compra de semillas y herramientas para el huerto comunitario del barrio.",
+    "rewards": ["Nombre en la placa del huerto", "Foto de la cosecha"],
     "image_url": "/image/goal.png",
     "product_url": null,
     "target_amount": 8000,

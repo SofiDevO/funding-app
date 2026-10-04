@@ -1,12 +1,41 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import GoalsCard from "@/components/goals/GoalsCard.astro";
+import goals from "@/data/goals.json";
 ---
 
-<Layout  >
-
+<Layout>
   <main
-    class="flex flex-col items-center justify-center h-full min-h-screen w-full"
+    class="flex flex-col items-center justify-center h-full min-h-screen w-full mx-auto px-8 "
   >
-    <p class="text-white">Lorem ipsum dolor sit amet.</p>
+    <section class="grid-container">
+      {
+        goals.map((goal) => (
+          <GoalsCard
+            id={goal.id}
+            title={goal.title}
+            description={goal.description ?? ""}
+            targetAmount={goal.target_amount}
+            currentAmount={goal.current_amount ?? 0}
+            image={goal.image_url ?? "/image/goal.png"}
+          />
+        ))
+      }
+    </section>
   </main>
 </Layout>
+
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    gap: 1rem;
+    width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    .grid-container {
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+</style>

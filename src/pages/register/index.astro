@@ -1,0 +1,32 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+import Form from "@/components/shared/form/Form.astro";
+import FormInput from "@/components/shared/form/FormInput.astro";
+---
+
+<Layout title="Registrate">
+  <main
+    class="flex flex-col items-center justify-center w-full h-full min-h-screen"
+  >
+    <Form novalidate>
+      <FormInput name="username" type="text" label="Username" />
+      <FormInput name="email" type="email" label="Email" />
+      <FormInput name="password" type="password" label="Password" />
+      <FormInput
+        name="confirm_password"
+        type="password"
+        label="Confirm Password"
+      />
+    </Form>
+    <p class="text-amethyst-300 flex items-center gap-2 text-sm mt-10">
+      ¿Ya tienes cuenta?
+      <a
+        href="/login"
+        class="text-amethyst-500 hover:text-amethyst-400 hover:underline hover:underline-offset-2 transition-colors duration-300"
+      >
+        Inicia sesión aquí
+      </a>
+    </p>
+  </main>
+</Layout>

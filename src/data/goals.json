@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Sofi emparedado",
+    "description": "Recaudar $10,000 para comprar un emparedado",
+    "image_url": "/image/goal.png",
+    "product_url": null,
+    "target_amount": 10000,
+    "current_amount": 7000,
+    "status": "active",
+    "created_at": "2026-09-20 09:30:00",
+    "updated_at": "2026-10-01 14:15:00"
+  },
+  {
+    "id": 2,
+    "title": "Libros para estudiar",
+    "description": "Ayuda a completar una colección de libros de estudio",
+    "image_url": "/image/goal.png",
+    "product_url": null,
+    "target_amount": 15000,
+    "current_amount": 8400,
+    "status": "active",
+    "created_at": "2026-09-24 11:00:00",
+    "updated_at": "2026-10-02 16:40:00"
+  },
+  {
+    "id": 3,
+    "title": "Bicicleta para ir al trabajo",
+    "description": "Recaudación para comprar una bicicleta urbana",
+    "image_url": "/image/goal.png",
+    "product_url": null,
+    "target_amount": 25000,
+    "current_amount": 12000,
+    "status": "active",
+    "created_at": "2026-09-27 08:15:00",
+    "updated_at": "2026-10-02 10:20:00"
+  },
+  {
+    "id": 4,
+    "title": "Huerto comunitario",
+    "description": "Compra semillas y herramientas para el huerto del barrio",
+    "image_url": "/image/goal.png",
+    "product_url": null,
+    "target_amount": 8000,
+    "current_amount": 3200,
+    "status": "active",
+    "created_at": "2026-09-30 13:45:00",
+    "updated_at": "2026-10-03 09:10:00"
+  }
+]

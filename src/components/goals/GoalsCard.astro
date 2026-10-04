@@ -1,0 +1,87 @@
+---
+interface Props {
+  id: number;
+  title: string;
+  description: string;
+  targetAmount: number;
+  currentAmount: number;
+  image: string;
+}
+
+const {
+  id,
+  title,
+  description,
+  targetAmount,
+  currentAmount,
+  image,
+} = Astro.props;
+const progress = (currentAmount / targetAmount) * 100;
+const suggestedAmounts = [10, 20, 30];
+---
+
+<article
+  class="flex flex-col rounded-xl bg-amethyst-100 w-full h-full min-h-80 p-4"
+>
+  <div class="flex sm:flex-col md:flex-row items-center gap-10 w-full">
+    <div
+      class="w-full max-w-60 h-full max-h-80 rounded-2xl overflow-hidden shadow-amethyst-800/40 shadow-lg"
+    >
+      <img src={image} alt={title} class="w-full h-full object-cover" />
+    </div>
+    <div class="flex flex-col items-start gap-3">
+      <h2 class="font-bold text-2xl">{title}</h2>
+      <p class="text-gray-600">{description}</p>
+
+      <label class="font-bold text-amethyst-500" for={`amount-${id}`}
+        >{progress.toFixed()}%</label
+      >
+      <progress
+        id={`amount-${id}`}
+        max="100"
+        value={progress}
+      >
+        {progress}%
+      </progress>
+      <div class="flex items-center gap-2 flex-wrap">
+        {
+          suggestedAmounts.map((amount) => (
+            <button class="bg-amethyst-500 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer">
+              ${amount}
+            </button>
+          ))
+        }
+        <input
+          type="number"
+          placeholder="Custom amount"
+          class="border border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
+        />
+      </div>
+      <div class="flex items-center gap-4 w-full">
+        <button
+          type="submit"
+          class="mt-auto flex items-center gap-2 font-bold bg-amethyst-500 w-fit text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
+        >
+          Donar
+          <iconify-icon
+            width="20"
+            height="20"
+            icon="ant-design:heart-twotone"
+            style="fill:#ff1e6c; color: #ff1e6c;"></iconify-icon>
+        </button>
+        <a class="bg-amethyst-800 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer" href={`/goals/${id}`}>Ver detalles</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style is:inline>
+  progress::-webkit-progress-bar {
+    border-radius: 12px;
+  }
+
+  progress::-webkit-progress-value {
+    border-radius: 12px;
+    background-color: var(--color-amethyst-700);
+  }
+</style>

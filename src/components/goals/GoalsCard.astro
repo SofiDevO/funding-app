@@ -10,16 +10,10 @@ interface Props {
   image: string;
 }
 
-const {
-  id,
-  title,
-  excerpt,
-  targetAmount,
-  currentAmount,
-  image,
-} = Astro.props;
+const { id, title, excerpt, targetAmount, currentAmount, image } = Astro.props;
 const progress = (currentAmount / targetAmount) * 100;
 const suggestedAmounts = SUGGESTED_AMOUNTS;
+import Title from "@/components/shared/Title.astro";
 ---
 
 <article
@@ -32,19 +26,17 @@ const suggestedAmounts = SUGGESTED_AMOUNTS;
       <img src={image} alt={title} class="w-full h-full object-cover" />
     </div>
     <div class="flex flex-col items-start gap-3">
-      <h2 class="font-bold text-2xl">{title}</h2>
-      <p class="text-gray-600">{excerpt}</p>
+      <Title as="h3" title={title} class="font-bold text-2xl text-left"  />
 
-      <label class="font-bold text-amethyst-500" for={`amount-${id}`}
-        >{progress.toFixed()}%</label
-      >
-      <progress
-        id={`amount-${id}`}
-        max="100"
-        value={progress}
-      >
-        {progress}%
-      </progress>
+      <p class="text-gray-600">{excerpt}</p>
+      <div class="flex flex-col">
+        <label class="font-bold text-amethyst-500" for={`amount-${id}`}
+          >{progress.toFixed()}%</label
+        >
+        <progress id={`amount-${id}`} max="100" value={progress}>
+          {progress}%
+        </progress>
+      </div>
       <div class="flex items-center gap-2 flex-wrap">
         {
           suggestedAmounts.map((amount) => (
@@ -71,7 +63,10 @@ const suggestedAmounts = SUGGESTED_AMOUNTS;
             icon="ant-design:heart-twotone"
             style="fill:#ff1e6c; color: #ff1e6c;"></iconify-icon>
         </button>
-        <a class="bg-amethyst-800 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer" href={`/goals/${id}`}>Ver detalles</a>
+        <a
+          class="bg-amethyst-800 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+          href={`/goals/${id}`}>Ver detalles</a
+        >
       </div>
     </div>
   </div>
@@ -79,11 +74,12 @@ const suggestedAmounts = SUGGESTED_AMOUNTS;
 
 <style is:inline>
   progress::-webkit-progress-bar {
-    border-radius: 12px;
+    border-radius: 5px;
+    height: 4.5px;
   }
 
   progress::-webkit-progress-value {
-    border-radius: 12px;
+    border-radius: 5px;
     background-color: var(--color-amethyst-700);
   }
 </style>

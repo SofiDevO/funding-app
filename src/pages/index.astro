@@ -2,25 +2,29 @@
 import Layout from "@/layouts/Layout.astro";
 import GoalsCard from "@/components/goals/GoalsCard.astro";
 import goals from "@/data/goals.json";
+import Title from "@/components/shared/Title.astro";
 ---
 
 <Layout>
   <main
-    class="flex flex-col items-center justify-center h-full min-h-screen w-full mx-auto px-8 "
+    class="flex flex-col items-center justify-center h-full min-h-screen w-full mx-auto px-8"
   >
-    <section class="grid-container">
-      {
-        goals.map((goal) => (
-          <GoalsCard
-            id={goal.id}
-            title={goal.title}
-            excerpt={goal.excerpt}
-            targetAmount={goal.target_amount}
-            currentAmount={goal.current_amount ?? 0}
-            image={goal.image_url ?? "/image/goal.png"}
-          />
-        ))
-      }
+    <section class="flex flex-col w-full h-ful gap-4 items-center justify-center">
+      <Title as="h2" title="Metas activas" isGradient={true} />
+      <div class="grid-container">
+        {
+          goals.map((goal) => (
+            <GoalsCard
+              id={goal.id}
+              title={goal.title}
+              excerpt={goal.excerpt}
+              targetAmount={goal.target_amount}
+              currentAmount={goal.current_amount ?? 0}
+              image={goal.image_url ?? "/image/goal.png"}
+            />
+          ))
+        }
+      </div>
     </section>
   </main>
 </Layout>

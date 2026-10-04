@@ -17,16 +17,16 @@ import Title from "@/components/shared/Title.astro";
 ---
 
 <article
-  class="flex flex-col rounded-xl bg-amethyst-100 w-full h-full min-h-80 p-4"
+  class="flex flex-col rounded-xl bg-amethyst-100 w-full h-full  p-4"
 >
-  <div class="flex sm:flex-col md:flex-row items-center gap-10 w-full">
+  <div class="flex flex-col md:flex-row items-center gap-10 w-full">
     <div
-      class="w-full max-w-60 h-full max-h-80 rounded-2xl overflow-hidden shadow-amethyst-800/40 shadow-lg"
+      class="w-full min-w-30  md:max-w-40 h-full max-h-60 rounded-2xl overflow-hidden shadow-amethyst-800/40 shadow-lg"
     >
-      <img src={image} alt={title} class="w-full h-full object-cover" />
+      <img src={image} alt={title} class="w-full h-full object-contain md:object-cover" />
     </div>
     <div class="flex flex-col items-start gap-3">
-      <Title as="h3" title={title} class="font-bold text-2xl text-left"  />
+      <Title as="h3" title={title} class="font-bold text-2xl text-left" />
 
       <p class="text-gray-600">{excerpt}</p>
       <div class="flex flex-col">
@@ -37,37 +37,70 @@ import Title from "@/components/shared/Title.astro";
           {progress}%
         </progress>
       </div>
-      <div class="flex items-center gap-2 flex-wrap">
-        {
-          suggestedAmounts.map((amount) => (
-            <button class="bg-amethyst-500 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer">
-              ${amount}
-            </button>
-          ))
-        }
-        <input
-          type="number"
-          placeholder="Monto libre"
-          class="border border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
-        />
-      </div>
-      <div class="flex items-center gap-4 w-full">
-        <button
-          type="submit"
-          class="mt-auto flex items-center gap-2 font-bold bg-amethyst-500 w-fit text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
-        >
-          Donar
-          <iconify-icon
-            width="20"
-            height="20"
-            icon="ant-design:heart-twotone"
-            style="fill:#ff1e6c; color: #ff1e6c;"></iconify-icon>
-        </button>
-        <a
-          class="bg-amethyst-800 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
-          href={`/goals/${id}`}>Ver detalles</a
-        >
-      </div>
+      <form
+        data-donation-form
+        data-goal-id={id}
+        action="/api/donations/checkout"
+        method="post"
+        class="flex flex-col gap-3 w-full"
+      >
+        <input type="hidden" name="goalId" value={id} />
+
+        <div class="flex items-center gap-2 flex-wrap">
+          {
+            suggestedAmounts.map((amount) => (
+              <button
+                type="button"
+                data-amount={amount}
+                class="bg-amethyst-500 text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+              >
+                ${amount}
+              </button>
+            ))
+          }
+          <input
+            type="number"
+            name="amount"
+            min="1"
+            step="0.01"
+            placeholder="Monto libre"
+            aria-label="Monto libre en dólares"
+            class="border border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
+          />
+        </div>
+
+        <label class="flex items-center gap-2 text-xs text-gray-600 cursor-pointer">
+          <input
+            type="checkbox"
+            name="coverFees"
+            data-cover-fees
+            class="accent-amethyst-500 cursor-pointer "
+          />
+          Cubrir comisión de Lemon Squeezy para que el creador reciba el monto total
+          <span data-fee class="font-bold text-amethyst-500"></span>
+        </label>
+
+        <p data-total hidden class="text-sm font-bold text-amethyst-500"></p>
+        <p data-form-error hidden class="text-sm text-red-500"></p>
+
+        <div class="flex items-center gap-4 w-full mt-auto">
+          <button
+            type="submit"
+            class="flex items-center gap-2 font-bold bg-amethyst-500 w-fit text-white px-4 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
+          >
+            Donar
+            <iconify-icon
+              width="20"
+              height="20"
+              icon="ant-design:heart-twotone"
+              style="fill:#ff1e6c; color: #ff1e6c;"></iconify-icon>
+          </button>
+          <a
+            class="bg-amethyst-800 text-white px-4 py-2 rounded-md hover:bg-amethyst-700 transition-colors cursor-pointer"
+            href={`/goals/${id}`}>Ver detalles</a
+          >
+        </div>
+      </form>
     </div>
   </div>
 </article>

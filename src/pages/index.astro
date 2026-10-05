@@ -7,7 +7,7 @@ import Title from "@/components/shared/Title.astro";
 
 <Layout>
   <main
-    class="flex flex-col items-center justify-center h-full min-h-screen w-full mx-auto px-8"
+    class="flex flex-col items-center justify-center h-full  w-full max-w-300 mx-auto px-8 py-12 "
   >
     <section class="flex flex-col w-full h-ful gap-4 items-center justify-center">
       <Title as="h2" title="Metas activas" isGradient={true} />
@@ -31,8 +31,9 @@ import Title from "@/components/shared/Title.astro";
 
 <style>
   .grid-container {
+    margin-top: 2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
     gap: 1rem;
     width: 100%;
   }

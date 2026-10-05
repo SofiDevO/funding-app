@@ -1,0 +1,191 @@
+---
+import { SUGGESTED_AMOUNTS } from "@/consts";
+
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import GoalsData from "@/data/goals.json";
+import Layout from "@/layouts/Layout.astro";
+import Title from "@/components/shared/Title.astro";
+import type { id } from "zod/locales";
+
+export const getStaticPaths = (async () => {
+  const goals = GoalsData;
+  return goals.map((goal) => ({
+    params: { id: goal.id },
+    props: { goal },
+  }));
+}) satisfies GetStaticPaths;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { goal } = Astro.props;
+const {
+  title,
+  description,
+  image_url,
+  product_url,
+  target_amount,
+  current_amount,
+  id,
+  rewards,
+} = goal;
+
+const progress = (current_amount / target_amount) * 100;
+const suggestedAmounts = SUGGESTED_AMOUNTS;
+---
+
+<Layout>
+  <main
+    class="flex px-4 py-3 flex-col w-full h-full justify-center max-w-400 mx-auto "
+  >
+    <Title title={title} isGradient={true} class="m-10" />
+    <div class="w-full  flex flex-wrap-reverse items-center gap-8 justify-center">
+      <div class="flex flex-col gap-2 px-1">
+        <Title
+          as="h2"
+          title="Acerca de esta meta"
+          isGradient={true}
+          class="text-left"
+        />
+        <p
+          class="mx-auto max-w-150 text-balance text-gray-200 whitespace-pre-wrap"
+        >
+          {description}
+        </p>
+        {
+          product_url && (
+            <a
+              href={product_url}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              class="bg-amethyst-500 w-fit text-gray-200 px-3 py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+            >
+              Visitar el sitio del producto
+            </a>
+          )
+        }
+        <div class="flex flex-col gap-3">
+          <Title
+            as="h3"
+            title="Rewards de la meta"
+            isGradient={true}
+            class="text-left"
+          />
+          <ul class="pl-10">
+            {
+              rewards.map((reward) => (
+                <li class="text-gray-200 list-disc">{reward}</li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <Title as="h2" title="Donaciones" class="text-left" isGradient={true} />
+        <div class="flex flex-col">
+          <label
+            class="font-bold text-amethyst-500 text-lg"
+            for={`amount-${id}`}>{progress.toFixed()}%</label
+          >
+          <progress
+            class="w-full"
+            id={`amount-${id}`}
+            max="100"
+            value={progress}
+          >
+            {progress}%
+          </progress>
+        </div>
+        <form
+          data-donation-form
+          data-goal-id={id}
+          action="/api/donations/checkout"
+          method="post"
+          class="flex flex-col gap-3 w-full"
+        >
+          <input type="hidden" name="goalId" value={id} />
+
+          <div class="flex items-center gap-1 flex-wrap text-sm font-bold">
+            {
+              suggestedAmounts.map((amount) => (
+                <button
+                  type="button"
+                  data-amount={amount}
+                  class="bg-amethyst-500 text-gray-100 px-3 py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+                >
+                  ${amount}
+                </button>
+              ))
+            }
+            <input
+              type="number"
+              id={`amount-input-${id}`}
+              name="amount"
+              min="1"
+              step="1"
+              placeholder="Otra cantidad"
+              aria-label="Monto libre en dólares"
+              class="border bg-amethyst-200 border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none shadow-amethyst-500 shadow-sm focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
+            />
+          </div>
+
+          <label
+            class="flex items-center gap-2 text-sm text-amethyst-200 cursor-pointer"
+          >
+            <input
+              type="checkbox"
+              name="coverFees"
+              data-cover-fees
+              class="accent-amethyst-500 cursor-pointer"
+            />
+            Cubrir comisión de Lemon Squeezy
+            <span data-fee class="font-bold text-amethyst-500"></span>
+          </label>
+
+          <p data-total hidden class="text-sm font-bold text-amethyst-500"></p>
+          <p data-form-error hidden class="text-sm text-red-500"></p>
+
+          <div class="flex items-center gap-4 w-full mt-auto">
+            <button
+              type="submit"
+              class="flex items-center justify-center gap-2 font-bold bg-amethyst-500 w-full text-gray-100 text-base px-4 py-3 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
+            >
+              Donar
+              <iconify-icon
+                width="20"
+                height="20"
+                icon="ant-design:heart-twotone"
+                style="fill:#ff1e6c; color: #ff1e6c;"></iconify-icon>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="w-100 h-full overflow-hidden rounded-lg group">
+        <img
+          src={image_url}
+          alt={title}
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style is:inline>
+  progress::-webkit-progress-bar {
+    border-radius: 5px;
+    height: 8px;
+  }
+
+  progress::-webkit-progress-value {
+    border-radius: 5px;
+    background-color: var(--color-amethyst-500);
+  }
+  progress::-webkit-progress-bar {
+    background-color: white;
+  }
+
+  /* ::-webkit-inner-spin-button, ::-webkit-outer-spin-button{
+    display: none;
+  } */
+</style>
+
+<script>
+  import "@/components/goals/utils/amount";
+</script>

@@ -11,6 +11,9 @@ import type { R2Bucket } from '@cloudflare/workers-types';
 
 import type { AppEnv } from "./types/env";
 
+
+import testRoutes from "@/api/routes/test"
+
 const app = new Hono<AppEnv>();
 const workerEnv = env as Cloudflare.Env;
 
@@ -23,6 +26,13 @@ app.use("/*", async (c, next) => {
   await next()
 });
 
+app.onError((err,c)=>{
+  console.error(err);
+  return c.json({error:"Not Found"});
+})
+
+
+app.route("/api/test", testRoutes);
 
 app.use(sessions());
 app.use(actions());

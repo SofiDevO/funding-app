@@ -5,7 +5,7 @@ import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import GoalsData from "@/data/goals.json";
 import Layout from "@/layouts/Layout.astro";
 import Title from "@/components/shared/Title.astro";
-import type { id } from "zod/locales";
+
 
 export const getStaticPaths = (async () => {
   const goals = GoalsData;

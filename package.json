@@ -14,11 +14,13 @@
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types",
-    "wrangler:deploy": "astro build && wrangler deploy"
+    "wrangler:deploy": "astro build && wrangler deploy",
+    "type-check": "npx astro check"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.3",
     "@astrojs/sitemap": "^3.7.4",
+    "@sofidevo/astro-dynamic-header": "^3.1.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "hono": "^4.13.9",
@@ -30,7 +32,9 @@
     "esbuild": true
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20260928.1",
+    "typescript": "^6.0.3",
     "wrangler": "^4.143.0"
   }
 }

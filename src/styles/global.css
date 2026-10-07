@@ -17,26 +17,29 @@
   --color-gradient6-start: rgba(21, 2, 58, 0.5);
   --color-background-gradient6: #100223;
   --color-background-after: #17131c;
+  --d-blur: blur(14px);
+  --d-bg: rgba(10, 10, 10, 0.85);
 }
 
 
 @theme inline {
   --color-amethyst-50: #faf6fe;
---color-amethyst-100: #f4ebfc;
---color-amethyst-200: #ebdbf9;
---color-amethyst-300: #dabff3;
---color-amethyst-400: #c495eb;
---color-amethyst-500: #aa68df;
---color-amethyst-600: #974dd0;
---color-amethyst-700: #813bb5;
---color-amethyst-800: #6d3495;
---color-amethyst-900: #592b78;
---color-amethyst-950: #3c1457;
---color-background-body: #09060c;
+  --color-amethyst-100: #f4ebfc;
+  --color-amethyst-200: #ebdbf9;
+  --color-amethyst-300: #dabff3;
+  --color-amethyst-400: #c495eb;
+  --color-amethyst-500: #aa68df;
+  --color-amethyst-600: #974dd0;
+  --color-amethyst-700: #813bb5;
+  --color-amethyst-800: #6d3495;
+  --color-amethyst-900: #592b78;
+  --color-amethyst-950: #3c1457;
+  --color-background-body: #09060c;
+
 }
 
 
-body{
+body {
   overflow-x: hidden;
   background: var(--color-background-body);
   display: flex;

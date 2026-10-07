@@ -1,8 +1,15 @@
 ---
+import { twMerge } from "tailwind-merge";
 import GradientBg from "@/components/gradient-bg/GradientBg.astro";
 import BaseHead from "../components/BaseHead.astro";
-import Header from "@/components/Header.astro";
 
+import Header from "@sofidevo/astro-dynamic-header/Header";
+import type {
+  MenuItem,
+  NavConfig,
+  HeaderClassNames,
+  HeaderProps,
+} from "@sofidevo/astro-dynamic-header";
 interface Props {
   title?: string;
   description?: string;
@@ -18,9 +25,14 @@ const {
   url = Astro.url.href,
   type = "website",
 } = Astro.props;
+
+const menuItems = [
+  { link: "/about", text: "About" },
+  { link: "/contact", text: "Contact" },
+];
 ---
 
-<html lang="en">
+<html lang="es">
   <head>
     <BaseHead {description} {image} />
     <slot name="head" />
@@ -28,7 +40,33 @@ const {
   <GradientBg>
     <body class="">
       <GradientBg>
-        <Header />
+        <Header
+          navigation={{ menuItems }}
+          classNames={{
+            header: twMerge("bg-red"),
+          }}
+
+        >
+          <a slot="logo" href="/" class="flex items-center gap-2">
+            <img src="/image/logo.webp" alt="Branding" width="40" />
+            <div class="logo__container">
+              <h3 class="font-bold text-lg text-white">
+                Sofi<span class="text-cyan-400">Dev</span>
+              </h3>
+            </div>
+          </a>
+
+          <div class="flex items-center gap-2" slot="actions">
+            <a
+              class="bg-violet-600/30 text-violet-400 px-4 py-1 rounded-sm hover:text-white hover:bg-violet-500 transition-colors"
+              href="/login">login</a
+            >
+            <a
+              class="bg-violet-800 text-white px-4 py-1 rounded-sm hover:bg-violet-600 transition-colors shadow-2xl shadow-violet-500"
+              href="/register">register</a
+            >
+          </div>
+        </Header>
         <slot />
       </GradientBg>
     </body>

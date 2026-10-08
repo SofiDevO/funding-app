@@ -3,11 +3,12 @@ import Layout from "@/layouts/Layout.astro";
 import GoalsCard from "@/components/goals/GoalsCard.astro";
 import goals from "@/data/goals.json";
 import Title from "@/components/shared/Title.astro";
+export const prerender = true;
 ---
 
 <Layout>
   <main
-    class="flex flex-col items-center justify-center h-full  w-full max-w-300 mx-auto px-8 py-12 "
+    class="flex flex-col items-center justify-center h-full min-h-screen  w-full max-w-300 mx-auto px-8 pb-12  pt-25 "
   >
     <section class="flex flex-col w-full h-ful gap-4 items-center justify-center">
       <Title as="h2" title="Metas activas" isGradient={true} />

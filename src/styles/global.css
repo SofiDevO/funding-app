@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   --color-background-body: #09060c;
   --color-background-before: #0c0912;
@@ -44,5 +45,7 @@ body {
   background: var(--color-background-body);
   display: flex;
   flex-direction: column;
+  height: 100%;
   min-height: 100vh;
+  scroll-padding-top: 5rem;
 }

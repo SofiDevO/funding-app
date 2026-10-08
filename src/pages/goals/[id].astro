@@ -29,11 +29,12 @@ const {
 
 const progress = (current_amount / target_amount) * 100;
 const suggestedAmounts = SUGGESTED_AMOUNTS;
+export const prerender = true
 ---
 
 <Layout>
   <main
-    class="flex px-4 py-4 flex-col w-full h-full justify-center max-w-300 mx-auto "
+    class="flex px-4 py-4 flex-col w-full h-full min-h-screen justify-center max-w-300 mx-auto pb-10 pt-25"
   >
     <a href="/" transition:name={`index-link-${id}`} class="text-gray-200 text-sm flex items-center gap-2 w-fit font-bold hover:text-amethyst-500 transition-colors cursor-pointer group">
       <iconify-icon class="group-hover:-translate-x-1" width="20" height="20" icon="akar-icons:arrow-left"></iconify-icon>

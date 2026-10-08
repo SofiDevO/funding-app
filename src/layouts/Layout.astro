@@ -42,10 +42,7 @@ const menuItems = [
       <GradientBg>
         <Header
           navigation={{ menuItems }}
-          classNames={{
-            header: twMerge("bg-red"),
-          }}
-
+          classNames={{ header:"!bg-red-500" }}
         >
           <a slot="logo" href="/" class="flex items-center gap-2">
             <img src="/image/logo.webp" alt="Branding" width="40" />
@@ -72,3 +69,11 @@ const menuItems = [
     </body>
   </GradientBg>
 </html>
+
+<style is:inline>
+  @layer utilities {
+    .custom-header {
+      background-color: red;
+    }
+  }
+</style>

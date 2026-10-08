@@ -11,8 +11,7 @@ import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
 export default defineConfig({
   adapter: cloudflare(),
   site: "https://funding.sofidev.top/",
-
-
+  output:'server',
   vite: {
     plugins: [tailwindcss()],
     resolve: {

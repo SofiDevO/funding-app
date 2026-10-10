@@ -6,7 +6,6 @@ import GoalsData from "@/data/goals.json";
 import Layout from "@/layouts/Layout.astro";
 import Title from "@/components/shared/Title.astro";
 
-
 export const getStaticPaths = (async () => {
   const goals = GoalsData;
   return goals.map((goal) => ({
@@ -29,20 +28,50 @@ const {
 
 const progress = (current_amount / target_amount) * 100;
 const suggestedAmounts = SUGGESTED_AMOUNTS;
-export const prerender = true
+export const prerender = true;
 ---
 
-<Layout>
+<Layout showHeader={false}>
   <main
-    class="flex px-4 py-4 flex-col w-full h-full min-h-screen justify-center max-w-300 mx-auto pb-10 pt-25"
+    class="flex px-4 pt-4 flex-col gap-10 w-full h-full min-h-screen max-w-300 mx-auto pb-10"
   >
-    <a href="/" transition:name={`index-link-${id}`} class="text-gray-200 text-sm flex items-center gap-2 w-fit font-bold hover:text-amethyst-500 transition-colors cursor-pointer group">
-      <iconify-icon class="group-hover:-translate-x-1" width="20" height="20" icon="akar-icons:arrow-left"></iconify-icon>
-      Volver</a>
-    <Title title={title} isGradient={true} class="m-2" transition:name={`goal-title-${id}`} />
-    <div class="w-full  flex items-center gap-6 justify-between">
-      <div class="flex flex-col gap-2 px-1 w-full " transition:name={`goal-description-${id}`}>
-        <p class=" text-balance text-gray-200 whitespace-pre-line text-[0.95rem]">
+    <div
+      class="flex items-center w-full h-60 md:h-80 overflow-hidden group bg-center bg-cover bg-no-repeat relative rounded-xl"
+      transition:name={`goal-image-${id}`}
+      transition:persist
+      style={`background-image:url(${image_url})`}
+    >
+      <a
+        href="/"
+        transition:name={`index-link-${id}`}
+        class="z-20 absolute top-4 left-4 text-gray-200 text-sm flex items-center gap-2 w-fit font-extrabold hover:text-cyan-400 transition-colors cursor-pointer group"
+      >
+        <iconify-icon
+          class="group-hover:-translate-x-1"
+          width="20"
+          height="20"
+          icon="akar-icons:arrow-left"></iconify-icon>
+        Volver</a
+      >
+      <Title
+        title={title}
+        isGradient={true}
+        class="z-20 text-3xl md:text-5xl font-extrabold mb-10 absolute top-50 left-[50%] translate-x-[-50%]"
+        transition:name={`goal-title-${id}`}
+      />
+      <div
+        class="overlay backdrop-blur bg-linear-to-t from-black/98 via-black/80 to-black/50 z-10 absolute w-full h-full pointer-events-none"
+      >
+      </div>
+    </div>
+    <div class="w-full flex gap-6 justify-between">
+      <div
+        class="flex flex-col gap-8 px-1 w-full"
+        transition:name={`goal-description-${id}`}
+      >
+        <p
+          class="text-balance text-gray-200 whitespace-pre-line "
+        >
           {description}
         </p>
         {
@@ -51,7 +80,7 @@ export const prerender = true
               href={product_url}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              class="bg-amethyst-500 w-fit text-gray-200 px-3 py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+              class="bg-amethyst-950 w-fit text-gray-200 px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
             >
               Visitar el sitio del producto
             </a>
@@ -72,11 +101,21 @@ export const prerender = true
             }
           </ul>
         </div>
+      </div>
 
-        <Title as="h2" title="Donaciones" class="text-left" isGradient={true} />
-        <div class="flex flex-col">
+      <div
+        class="flex flex-col w-full items-start justify-start h-full sticky top-0 bg-amethyst-300 p-4 rounded-xl"
+        transition:name={`donation-form-${id}`}
+      >
+        <Title
+          as="h2"
+          title="Donaciones"
+          class="text-left font-extrabold text-4xl text-amethyst-900"
+
+        />
+        <div class="flex flex-col gap-2 py-10 w-full">
           <label
-            class="font-bold text-amethyst-500 text-lg"
+            class="font-bold text-amethyst-800 text-lg"
             for={`amount-${id}`}>{progress.toFixed()}%</label
           >
           <progress
@@ -88,24 +127,23 @@ export const prerender = true
             {progress}%
           </progress>
         </div>
-        <form
-        transition:name={`donation-form-${id}`}
 
+        <form
           data-donation-form
           data-goal-id={id}
           action="/api/donations/checkout"
           method="post"
-          class="flex flex-col gap-3 w-full"
+          class="flex flex-col gap-2 w-full"
         >
           <input type="hidden" name="goalId" value={id} />
 
-          <div class="flex items-center gap-1 flex-wrap text-sm font-bold">
+          <div class="flex items-center gap-2 flex-wrap text-sm font-bold">
             {
               suggestedAmounts.map((amount) => (
                 <button
                   type="button"
                   data-amount={amount}
-                  class="bg-amethyst-500 text-gray-100 px-3 py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+                  class="text-xl bg-amethyst-700 text-gray-100 px-3 py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
                 >
                   ${amount}
                 </button>
@@ -119,12 +157,12 @@ export const prerender = true
               step="1"
               placeholder="Otra cantidad"
               aria-label="Monto libre en dólares"
-              class="border bg-amethyst-200 border-gray-300 rounded-md px-2 py-1 w-32 focus:outline-none shadow-amethyst-500 shadow-sm focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
+              class="text-xl border bg-amethyst-200 border-gray-300 rounded-md px-2 py-1 w-100 focus:outline-none shadow-amethyst-500 shadow-sm focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
             />
           </div>
 
           <label
-            class="flex items-center gap-2 text-sm text-amethyst-200 cursor-pointer"
+            class="flex items-center gap-2 text-sm text-amethyst-900 cursor-pointer"
           >
             <input
               type="checkbox"
@@ -133,16 +171,16 @@ export const prerender = true
               class="accent-amethyst-500 cursor-pointer"
             />
             Cubrir comisión de Lemon Squeezy
-            <span data-fee class="font-bold text-amethyst-500"></span>
+            <span data-fee class="font-bold text-amethyst-950"></span>
           </label>
 
-          <p data-total hidden class="text-sm font-bold text-amethyst-500"></p>
+          <p data-total hidden class="text-sm font-bold text-amethyst-950"></p>
           <p data-form-error hidden class="text-sm text-red-500"></p>
 
           <div class="flex items-center gap-4 w-full mt-auto">
             <button
               type="submit"
-              class="flex items-center justify-center gap-2 font-bold bg-amethyst-500 w-full text-gray-100 text-base px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
+              class="flex items-center justify-center gap-2 font-bold bg-amethyst-900 w-full text-gray-100 text-base px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
             >
               Donar
               <iconify-icon
@@ -154,22 +192,16 @@ export const prerender = true
           </div>
         </form>
       </div>
-      <div class="w-150 h-full overflow-hidden rounded-lg group" transition:name={`goal-image-${id}`} transition:persist>
-        <img
-          src={image_url}
-          alt={title}
-          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
-      </div>
     </div>
   </main>
 </Layout>
 
-  // Ejecutar al cargar la página inicialmente y después de cada View Transition
+
 <style is:inline>
   progress::-webkit-progress-bar {
     border-radius: 5px;
     height: 8px;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9));
   }
 
   progress::-webkit-progress-value {
@@ -177,7 +209,7 @@ export const prerender = true
     background-color: var(--color-amethyst-500);
   }
   progress::-webkit-progress-bar {
-    background-color: white;
+    background-color: rgb(35, 5, 77);
   }
 
   /* ::-webkit-inner-spin-button, ::-webkit-outer-spin-button{

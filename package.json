@@ -20,7 +20,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.3",
     "@astrojs/sitemap": "^3.7.4",
-    "@sofidevo/astro-dynamic-header": "^3.1.0",
+    "@sofidevo/astro-dynamic-header": "^5.0.7",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "hono": "^4.13.9",

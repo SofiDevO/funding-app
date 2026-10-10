@@ -13,8 +13,8 @@ import Title from "@/components/shared/Title.astro";
     <section
       class="flex flex-col w-full h-ful gap-4 items-center justify-center"
     >
-      <Title as="h2" title="Crear una cuenta" isGradient={true} />
-      <Form novalidate class="max-w-100">
+      <Title transition:name="register-btn" as="h2" title="Crear una cuenta" isGradient={true} />
+      <Form transition:animate={"slide"}transition:name="form-register" novalidate class="max-w-100">
         <FormInput name="username" type="text" label="Username" />
         <FormInput name="email" type="email" label="Email" />
         <FormInput name="password" type="password" label="Password" />
@@ -27,6 +27,8 @@ import Title from "@/components/shared/Title.astro";
       <p class="text-amethyst-300 flex items-center gap-2 text-sm mt-4">
         ¿Ya tienes cuenta?
         <a
+        transition:name="login-btn"
+        transition:persist
           href="/login"
           class="text-amethyst-500 hover:text-amethyst-400 hover:underline hover:underline-offset-2 transition-colors duration-300"
         >

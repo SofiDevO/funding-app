@@ -1,4 +1,5 @@
 .background {
+    pointer-events: none;
     background-color: var(--color-background-body);
     position: relative;
     z-index: 1;

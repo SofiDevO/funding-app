@@ -10,14 +10,16 @@ import Title from "@/components/shared/Title.astro";
       <div
       class="flex flex-col items-center justify-center w-full h-full min-h-screen gap-4"
       >
-      <Title as="h2" title="Iniciar sesión" isGradient={true} />
-      <Form action="/login" novalidate class=" max-w-100">
+      <Title transition:name="login-btn" as="h2" title="Iniciar sesión" isGradient={true} />
+      <Form transition:animate={"slide"}transition:name="form-register" action="/login" novalidate class=" max-w-100">
         <FormInput name="username" type="text" label="Username or email" />
         <FormInput name="password" type="password" label="Password" />
       </Form>
       <p class="text-amethyst-300 flex items-center gap-2 text-sm">
         ¿No tienes cuenta?
         <a
+        transition:name="register-btn"
+        transition:persist
           href="/register"
           class="text-amethyst-500 hover:text-amethyst-400 hover:underline hover:underline-offset-2 transition-colors duration-300"
         >

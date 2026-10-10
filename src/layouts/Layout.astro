@@ -16,6 +16,7 @@ interface Props {
   image?: string;
   url?: string;
   type?: "website" | "article" | "profile";
+  showHeader?: boolean;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   image = "/og-default.png",
   url = Astro.url.href,
   type = "website",
+  showHeader = true,
 } = Astro.props;
 
 const menuItems = [
@@ -40,40 +42,74 @@ const menuItems = [
   <GradientBg>
     <body class="">
       <GradientBg>
-        <Header
-          navigation={{ menuItems }}
-          classNames={{ header:"!bg-red-500" }}
-        >
-          <a slot="logo" href="/" class="flex items-center gap-2">
-            <img src="/image/logo.webp" alt="Branding" width="40" />
-            <div class="logo__container">
-              <h3 class="font-bold text-lg text-white">
-                Sofi<span class="text-cyan-400">Dev</span>
-              </h3>
-            </div>
-          </a>
+        {
+          showHeader && (
+            <Header
+              navigation={{ menuItems }}
+              preset="dark"
+              headerType="fullscreen"
+              classNames={{
+                header: "dinamic-header-bg py-1",
+                mobileNav: "bg-violet-800/20",
+              }}
+            >
+              <a slot="logo" href="/" class="flex items-center gap-2">
+                <img src="/image/logo.webp" alt="Branding" width="20" />
+                <div class="logo__container">
+                  <h3 class="font-bold text-lg text-white">
+                    Sofi<span class="text-cyan-400">Dev</span>
+                  </h3>
+                </div>
+              </a>
 
-          <div class="flex items-center gap-2" slot="actions">
-            <a
-              class="bg-violet-600/30 text-violet-400 px-4 py-1 rounded-sm hover:text-white hover:bg-violet-500 transition-colors"
-              href="/login">login</a
-            >
-            <a
-              class="bg-violet-800 text-white px-4 py-1 rounded-sm hover:bg-violet-600 transition-colors shadow-2xl shadow-violet-500"
-              href="/register">register</a
-            >
-          </div>
-        </Header>
+              <div class="flex items-center gap-2" slot="actions">
+                <a
+                  class="bg-violet-600/30 text-violet-400 px-4 py-1 rounded-sm hover:text-white hover:bg-violet-500 transition-colors"
+                  href="/login"
+                >
+                  login
+                </a>
+                <a
+                  class="bg-violet-800 text-white px-4 py-1 rounded-sm hover:bg-violet-600 transition-colors shadow-2xl shadow-violet-500"
+                  href="/register"
+                >
+                  register
+                </a>
+              </div>
+            </Header>
+          )
+        }
+
         <slot />
       </GradientBg>
     </body>
   </GradientBg>
 </html>
 
+<script is:inline>
+  function initHeader() {
+    const headerBg = document.querySelector(".dinamic-header-bg");
+
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 100) {
+        headerBg.classList.add("header-bg");
+      } else {
+        headerBg.classList.remove("header-bg");
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", initHeader);
+</script>
+
 <style is:inline>
   @layer utilities {
-    .custom-header {
-      background-color: red;
+    .dinamic-header-bg {
+      background: transparent;
+      transition: background 0.5s ease-in-out;
+    }
+    .header-bg {
+      background: rgba(0, 0, 0, 0.786);
     }
   }
 </style>

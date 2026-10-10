@@ -7,3 +7,4 @@ allowBuilds:
   workerd: true
 minimumReleaseAgeExclude:
   - wrangler@4.143.0
+  - '@sofidevo/astro-dynamic-header@5.0.3 || 5.0.4 || 5.0.5 || 5.0.6 || 5.0.7'

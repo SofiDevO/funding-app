@@ -25,6 +25,12 @@
 			"database_id": "8a81753e-203e-4f80-8584-bd880ec66b84",
 		},
 	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "c386fe99da764e21b3a347243606f8f4",
+		},
+	],
 	"r2_buckets": [
 		{
 			"bucket_name": "funding-app-bucket",

@@ -7,6 +7,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
 
+import react from "@astrojs/react";
+
 // https://astro.build/config
 export default defineConfig({
   adapter: cloudflare(),
@@ -41,5 +43,5 @@ export default defineConfig({
           priority: 0.8,
         };
       },
-    }),]
+    }), react()]
 });

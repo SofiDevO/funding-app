@@ -5,6 +5,7 @@ import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import GoalsData from "@/data/goals.json";
 import Layout from "@/layouts/Layout.astro";
 import Title from "@/components/shared/Title.astro";
+import SwiperCarousel from "@/components/shared/swiper/SwiperCarousel";
 
 export const getStaticPaths = (async () => {
   const goals = GoalsData;
@@ -70,7 +71,7 @@ export const prerender = true;
         transition:name={`goal-description-${id}`}
       >
         <p
-          class="text-balance text-gray-200 whitespace-pre-line "
+          class="text-balance text-gray-200 whitespace-pre-line text-base"
         >
           {description}
         </p>
@@ -80,7 +81,7 @@ export const prerender = true;
               href={product_url}
               target="_blank"
               rel="noopener noreferrer nofollow"
-              class="bg-amethyst-950 w-fit text-gray-200 px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+              class="bg-amethyst-950 w-fit text-gray-200 px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer text-base"
             >
               Visitar el sitio del producto
             </a>
@@ -96,7 +97,7 @@ export const prerender = true;
           <ul class="pl-10">
             {
               rewards.map((reward) => (
-                <li class="text-gray-200 list-disc">{reward}</li>
+                <li class="text-gray-200 list-disc text-base">{reward}</li>
               ))
             }
           </ul>
@@ -110,7 +111,7 @@ export const prerender = true;
         <Title
           as="h2"
           title="Donaciones"
-          class="text-left font-extrabold text-4xl text-amethyst-900"
+          class="text-left font-black text-4xl text-amethyst-900"
 
         />
         <div class="flex flex-col gap-2 py-10 w-full">
@@ -157,7 +158,7 @@ export const prerender = true;
               step="1"
               placeholder="Otra cantidad"
               aria-label="Monto libre en dólares"
-              class="text-xl border bg-amethyst-200 border-gray-300 rounded-md px-2 py-1 w-100 focus:outline-none shadow-amethyst-500 shadow-sm focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
+              class="text-xl border text-gray-900 bg-amethyst-200 border-gray-300 rounded-md px-2 py-1 w-100 focus:outline-none shadow-amethyst-500 shadow-sm focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
             />
           </div>
 
@@ -193,6 +194,7 @@ export const prerender = true;
         </form>
       </div>
     </div>
+    <SwiperCarousel client:visible />
   </main>
 </Layout>
 

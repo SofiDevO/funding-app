@@ -18,8 +18,8 @@ importers:
         specifier: ^3.7.4
         version: 3.7.4
       '@sofidevo/astro-dynamic-header':
-        specifier: ^5.0.7
-        version: 5.0.7(astro@7.3.5(@types/node@24.19.0)(jiti@2.7.0)(yaml@2.9.1))
+        specifier: ^5.0.10
+        version: 5.0.10(astro@7.3.5(@types/node@24.19.0)(jiti@2.7.0)(yaml@2.9.1))
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.3.1(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -1188,8 +1188,8 @@ packages:
     resolution: {integrity: sha512-P1Cz1dWaFfR4IR+U13mqqiGsLFf1KbayybWwdd2vfctdV6hDpUkgCY0nKOLLTMSoRd/jJNjtbqzf13K8DCCXQw==}
     engines: {node: '>=18'}
 
-  '@sofidevo/astro-dynamic-header@5.0.7':
-    resolution: {integrity: sha512-+gObMjbIwfviAsPUylWV1AHAi/QF4kV5kCn7Qa75IFOdW3B65b9cusakzEeg6II1PDoiYx3sxqT6IH8jesNR5Q==}
+  '@sofidevo/astro-dynamic-header@5.0.10':
+    resolution: {integrity: sha512-MwJva2vE89wPKUt2qiobMJVfNO2+RtOQsHE5AwxYtei+mTF2nPpTkIs5p868Gmb5il1UUN9tYecw9TJ5sN6l2A==}
     peerDependencies:
       astro: ^7.0.0
 
@@ -3412,7 +3412,7 @@ snapshots:
 
   '@sindresorhus/is@7.2.0': {}
 
-  '@sofidevo/astro-dynamic-header@5.0.7(astro@7.3.5(@types/node@24.19.0)(jiti@2.7.0)(yaml@2.9.1))':
+  '@sofidevo/astro-dynamic-header@5.0.10(astro@7.3.5(@types/node@24.19.0)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       astro: 7.3.5(@types/node@24.19.0)(jiti@2.7.0)(yaml@2.9.1)
 

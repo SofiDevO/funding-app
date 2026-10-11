@@ -6,7 +6,7 @@ import Title from "@/components/shared/Title.astro";
 ---
 
 <Layout title="Inicia sesión" description="Accede a tu cuenta" >
-  <main class="flex flex-col w-full h-full">
+  <main class="flex flex-col w-full h-full px-8">
       <div
       class="flex flex-col items-center justify-center w-full h-full min-h-screen gap-4"
       >
@@ -15,7 +15,7 @@ import Title from "@/components/shared/Title.astro";
         <FormInput name="username" type="text" label="Username or email" />
         <FormInput name="password" type="password" label="Password" />
       </Form>
-      <p class="text-amethyst-300 flex items-center gap-2 text-sm">
+      <p class="text-amethyst-300 flex items-center gap-2 text-md md:text-sm">
         ¿No tienes cuenta?
         <a
         transition:name="register-btn"

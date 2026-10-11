@@ -1,0 +1,94 @@
+---
+import Title  from "@/components/shared/Title.astro";
+
+interface Props {
+  id: string;
+  progress: number;
+  suggestedAmounts: number[];
+}
+
+const { id, progress, suggestedAmounts } = Astro.props as Props;
+---
+
+<div
+  class="flex flex-col w-full items-start justify-start h-full sticky top-0 bg-amethyst-300 p-4 rounded-xl"
+  transition:name={`donation-form-${id}`}
+>
+  <Title
+    as="h2"
+    title="Donaciones"
+    class="text-left font-black text-4xl text-amethyst-900"
+  />
+  <div class="flex flex-col gap-2 py-10 w-full">
+    <label class="font-bold text-amethyst-800 text-lg" for={`amount-${id}`}
+      >{progress.toFixed()}%</label
+    >
+    <progress class="w-full" id={`amount-${id}`} max="100" value={progress}>
+      {progress}%
+    </progress>
+  </div>
+
+  <form
+    data-donation-form
+    data-goal-id={id}
+    action="/api/donations/checkout"
+    method="post"
+    class="flex flex-col gap-2 w-full"
+  >
+    <input type="hidden" name="goalId" value={id} />
+
+    <div class="flex items-center gap-2 flex-wrap text-sm font-bold">
+      {
+        suggestedAmounts.map((amount) => (
+          <button
+            type="button"
+            data-amount={amount}
+            class="text-xl bg-amethyst-700 text-gray-100 px-3 py-1 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer"
+          >
+            ${amount}
+          </button>
+        ))
+      }
+      <input
+        type="number"
+        id={`amount-input-${id}`}
+        name="amount"
+        min="1"
+        step="1"
+        placeholder="Otra cantidad"
+        aria-label="Monto libre en dólares"
+        class="text-xl border text-gray-900 bg-amethyst-200 border-gray-300 rounded-md px-2 py-1 w-100 focus:outline-none shadow-amethyst-500 shadow-sm focus:ring-2 focus:ring-amethyst-500 focus:border-transparent"
+      />
+    </div>
+
+    <label
+      class="flex items-center gap-2 text-sm text-amethyst-900 cursor-pointer"
+    >
+      <input
+        type="checkbox"
+        name="coverFees"
+        data-cover-fees
+        class="accent-amethyst-500 cursor-pointer"
+      />
+      Cubrir comisión de Lemon Squeezy
+      <span data-fee class="font-bold text-amethyst-950"></span>
+    </label>
+
+    <p data-total hidden class="text-sm font-bold text-amethyst-950"></p>
+    <p data-form-error hidden class="text-sm text-red-500"></p>
+
+    <div class="flex items-center gap-4 w-full mt-auto">
+      <button
+        type="submit"
+        class="flex items-center justify-center gap-2 font-bold bg-amethyst-900 w-full text-gray-100 text-base px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer shadow-lg"
+      >
+        Donar
+        <iconify-icon
+          width="20"
+          height="20"
+          icon="bi:heart-fill"
+          style="fill:#ff1e6c; color: #ff1e6c;"></iconify-icon>
+      </button>
+    </div>
+  </form>
+</div>

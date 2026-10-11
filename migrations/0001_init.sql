@@ -5,6 +5,7 @@ CREATE TABLE goals (
   excerpt TEXT NOT NULL,
   description TEXT NOT NULL,
   image_url TEXT NOT NULL,
+  gallery TEXT,
   product_url TEXT,
   target_amount REAL NOT NULL,
   current_amount REAL DEFAULT 0,

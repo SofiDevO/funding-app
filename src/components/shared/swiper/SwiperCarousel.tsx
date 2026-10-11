@@ -12,7 +12,11 @@ import './swiper-carousel.css';
 // import required modules
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 
-export default function SwiperCarousel() {
+interface Props {
+  gallery: string[];
+}
+
+export default function SwiperCarousel({ gallery }: Props) {
   return (
     <>
       <Swiper
@@ -31,31 +35,11 @@ export default function SwiperCarousel() {
         modules={[EffectCoverflow, Pagination]}
         className="mySwiper"
       >
-
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-6.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-7.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-8.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/abstract-9.jpg" />
-        </SwiperSlide>
+        {gallery.map((image) => (
+          <SwiperSlide key={image}>
+            <img src={image} alt="Product Gallery" />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </>
   );

@@ -13,7 +13,8 @@ CREATE TABLE goals (
   status TEXT DEFAULT 'draft' CHECK(status IN ('active', 'draft', 'completed', 'paused')),
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now'))
-);
+ );
+
 
 
 CREATE TABLE donations (
@@ -28,7 +29,7 @@ CREATE TABLE donations (
   status TEXT DEFAULT 'pending' CHECK(status IN ('pending', 'completed', 'failed')),
   created_at TEXT DEFAULT (datetime('now')),
   FOREIGN KEY (goal_id) REFERENCES goals(id)
-);
+ );
 
 
 
@@ -40,7 +41,8 @@ CREATE TABLE users (
   profile_picture TEXT,
   has_donated INTEGER DEFAULT 0,
   created_at TEXT DEFAULT (datetime('now'))
-);
+ );
+
 
 
 CREATE TABLE admin (
@@ -49,7 +51,8 @@ CREATE TABLE admin (
   username TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   created_at TEXT DEFAULT (datetime('now'))
-);
+ );
+
 
 
 CREATE INDEX idx_goals_status ON goals(status);

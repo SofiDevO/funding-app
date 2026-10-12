@@ -1,0 +1,90 @@
+[
+  {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "title": "Invitame un cafe",
+    "product_name": "Cafe de especialidad",
+    "product_image": "/image/tips/cafe.png",
+    "price": 3.50,
+    "status": "active",
+    "sort_order": 1,
+    "created_at": "2026-10-01 10:00:00",
+    "updated_at": "2026-10-01 10:00:00"
+  },
+  {
+    "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "title": "Una lata de Monster",
+    "product_name": "Lata de Monster Energy",
+    "product_image": "/image/tips/monster.png",
+    "price": 2.50,
+    "status": "active",
+    "sort_order": 2,
+    "created_at": "2026-10-01 10:05:00",
+    "updated_at": "2026-10-01 10:05:00"
+  },
+  {
+    "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+    "title": "Chocolate para el stream",
+    "product_name": "Chocolate Snickers",
+    "product_image": "/image/tips/chocolate.png",
+    "price": 1.50,
+    "status": "active",
+    "sort_order": 3,
+    "created_at": "2026-10-01 10:10:00",
+    "updated_at": "2026-10-01 10:10:00"
+  },
+  {
+    "id": "d4e5f6a7-b8c9-0123-defa-234567890123",
+    "title": "Base para maquillaje",
+    "product_name": "Base de cobertura total",
+    "product_image": "/image/tips/maquillaje.png",
+    "price": 12.00,
+    "status": "active",
+    "sort_order": 4,
+    "created_at": "2026-10-01 10:15:00",
+    "updated_at": "2026-10-01 10:15:00"
+  },
+  {
+    "id": "e5f6a7b8-c9d0-1234-efab-345678901234",
+    "title": "Delineador de ojos",
+    "product_name": "Delineador liquido negro",
+    "product_image": "/image/tips/delineador.png",
+    "price": 6.00,
+    "status": "active",
+    "sort_order": 5,
+    "created_at": "2026-10-01 10:20:00",
+    "updated_at": "2026-10-01 10:20:00"
+  },
+  {
+    "id": "f6a7b8c9-d0e1-2345-fabc-456789012345",
+    "title": "Te matcha premium",
+    "product_name": "Te matcha ceremonial",
+    "product_image": "/image/tips/matcha.png",
+    "price": 8.50,
+    "status": "active",
+    "sort_order": 6,
+    "created_at": "2026-10-01 10:25:00",
+    "updated_at": "2026-10-01 10:25:00"
+  },
+  {
+    "id": "a7b8c9d0-e1f2-3456-abcd-567890123456",
+    "title": "Cheetos para picar",
+    "product_name": "Bolsa de Cheetos crunchy",
+    "product_image": "/image/tips/cheetos.png",
+    "price": 250.00,
+    "status": "active",
+    "sort_order": 7,
+    "created_at": "2026-10-01 10:30:00",
+    "updated_at": "2026-10-01 10:30:00"
+  },
+  {
+    "id": "b8c9d0e1-f2a3-4567-bcde-678901234567",
+    "title": "Cerveza lata",
+    "product_name": "Cerveza artesanal lata 473ml",
+    "product_image": "/image/tips/cerveza.png",
+    "price": 89.00,
+    "status": "inactive",
+    "sort_order": 8,
+    "created_at": "2026-10-01 10:35:00",
+    "updated_at": "2026-10-05 14:20:00"
+  }
+]

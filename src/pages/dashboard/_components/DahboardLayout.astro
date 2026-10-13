@@ -4,14 +4,19 @@ import SideBar from "./SideBar.astro";
 import NavBar from "./NavBar.astro";
 const menu = [
   {
-    href: "/dashboard",
+    href: "/",
     icon: "solar:house-bold",
     text: "Inicio",
   },
   {
-    href: "/dashboard/roadmap",
+    href: "/dashboard",
+    icon: "solar:house-bold",
+    text: "Dashboard",
+  },
+  {
+    href: "/dashboard/goals",
     icon: "solar:notebook-bold",
-    text: "Roadmaps",
+    text: "Goals",
   },
 ];
 ---
@@ -20,7 +25,7 @@ const menu = [
   <SideBar>
     <NavBar slot="navmenu" {menu} pathName={Astro.url.pathname} />
   </SideBar>
-  <main class="bg-black">
-    <slot name="dashboard-content"/>
+  <main class="dashboard-main">
+    <slot name="dashboard-content" />
   </main>
 </div>

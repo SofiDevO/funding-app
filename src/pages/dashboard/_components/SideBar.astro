@@ -1,15 +1,18 @@
 ---
 import UserHeader from "./UserHeader.astro";
 
-
 // const { user } = Astro.locals
-const user = { username: 'sofidev', avatar_url: 'https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png', email:'correo@falso.com' }
+const user = {
+  username: "sofidev",
+  avatar_url: "/image/profile.png",
+  email: "correo@falso.com",
+};
 
 const avatar = user.avatar_url
   ? user.avatar_url
-  : "https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png"
-
+  : "https://www.shareicon.net/data/512x512/2016/05/24/770117_people_512x512.png";
 ---
+
 <aside id="dashboard-sidebar" class="sidebar active" data-sidebar>
   <button
     id="dashboard-sidebar-toggle"
@@ -20,49 +23,49 @@ const avatar = user.avatar_url
     aria-expanded="true"
     aria-label="Replegar menú lateral"
   >
-    <span aria-hidden="true">‹</span>
+    <iconify-icon
+      icon="akar-icons:panel-right"
+      width="24"
+      height="24"
+      style="color: rgb(130, 54, 230)"></iconify-icon>
   </button>
   <UserHeader {...user} {avatar} />
-  <slot name="navmenu"/>
+  <slot name="navmenu" />
   <footer class="sidebar-footer">
     <a href="/settings">
-    <iconify-icon icon="solar:settings-bold-duotone" width="24" height="24"></iconify-icon>
-      <span class="text">Ajustes</span></a>
+      <iconify-icon icon="solar:settings-bold-duotone" width="24" height="24"
+      ></iconify-icon>
+      <span class="text">Ajustes</span></a
+    >
     <a class="logout" href="/logout">
-    <iconify-icon icon="majesticons:logout" width="24" height="24"></iconify-icon>
-      <span class="text">Salir</span></a>
+      <iconify-icon icon="majesticons:logout" width="24" height="24"
+      ></iconify-icon>
+      <span class="text">Salir</span></a
+    >
   </footer>
 </aside>
 
 <style>
-.sidebar {
+  .sidebar {
     grid-area: sidebar;
     position: relative;
     display: flex;
     flex-direction: column;
     min-height: 100dvh;
-    background-color: var(--bg-color);
+    background-color: rgba(27, 6, 61, 0.802);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: var(--sidebar-padding, 2rem);
     border-right: 1px solid #e6e0ee14;
-    overflow: hidden;
+    /* overflow: hidden; */
 
-    /* Botón de repliegue: hook estable `data-sidebar-toggle`.
-       Estilos mínimos a propósito para personalizar después. */
     .sidebar-toggle {
       position: absolute;
       top: 1rem;
-      right: 1rem;
-      display: inline-flex;
-      align-items: center;
       justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 50%;
-      border: 1px solid #e6e0ee14;
-      background: var(--secondary-color);
-      color: var(--text-color);
       cursor: pointer;
+      z-index: 999;
+      right: -14px;
+      width: fit-content;
     }
 
     .sidebar-menu ul {
@@ -77,7 +80,8 @@ const avatar = user.avatar_url
       display: flex;
       align-items: center;
       gap: 1rem;
-      &:hover, &.active {
+      &:hover,
+      &.active {
         background: var(--secondary-color);
         border-radius: 20px;
       }
@@ -91,15 +95,14 @@ const avatar = user.avatar_url
       text-decoration: none;
       font-weight: 500;
       min-height: 6vh;
-
     }
     .sidebar-footer {
       margin-top: auto;
       padding: 1rem;
     }
-}
+  }
 
-footer a {
+  footer a {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -112,56 +115,54 @@ footer a {
       background: var(--secondary-color);
       color: var(--accent-color);
     }
-}
-
+  }
 </style>
 <style is:global>
-
-@media (width >= 768px) {
-  .sidebar:not(.active) .sidebar-footer {
-    a {
-      justify-content: center;
-      padding: 1.5rem;
-    }
-    a .text {
+  @media (width >= 768px) {
+    .sidebar:not(.active) .sidebar-footer {
+      a {
+        justify-content: center;
+        padding: 1.5rem;
+      }
+      a .text {
         display: none;
+      }
     }
   }
-}
 </style>
 <script is:inline>
   function initSidebar() {
-    const sidebar = document.querySelector('[data-sidebar]');
-    const toggles = document.querySelectorAll('[data-sidebar-toggle]');
+    const sidebar = document.querySelector("[data-sidebar]");
+    const toggles = document.querySelectorAll("[data-sidebar-toggle]");
     if (!sidebar || toggles.length === 0) return;
 
     const syncAria = () => {
-      const expanded = sidebar.classList.contains('active');
+      const expanded = sidebar.classList.contains("active");
       toggles.forEach((toggle) => {
-        toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.setAttribute("aria-expanded", String(expanded));
         toggle.setAttribute(
-          'aria-label',
-          expanded ? 'Replegar menú lateral' : 'Expandir menú lateral',
+          "aria-label",
+          expanded ? "Replegar menú lateral" : "Expandir menú lateral",
         );
       });
     };
 
     // Estado inicial en móvil: replegado. Solo se aplica una vez por carga.
     if (window.innerWidth < 768) {
-      sidebar.classList.remove('active');
+      sidebar.classList.remove("active");
     }
     syncAria();
 
     toggles.forEach((toggle) => {
-      if (toggle.dataset.sidebarBound === 'true') return;
-      toggle.dataset.sidebarBound = 'true';
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
+      if (toggle.dataset.sidebarBound === "true") return;
+      toggle.dataset.sidebarBound = "true";
+      toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
         syncAria();
       });
     });
   }
 
-  document.addEventListener('astro:page-load', initSidebar);
+  document.addEventListener("astro:page-load", initSidebar);
   initSidebar();
 </script>

@@ -10,7 +10,7 @@ export interface Goal{
     currentAmount: number;
     rewards:string[];
     gallery:string[];
-    status: "active" | "draft" | "completeted" |"paused";
+    status: "active" | "draft" | "completed" |"paused";
     createdAt:string;
     updatedAt:string;
 };

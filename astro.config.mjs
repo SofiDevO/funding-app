@@ -14,6 +14,7 @@ export default defineConfig({
   adapter: cloudflare(),
   site: "https://funding.sofidev.top/",
   output:'server',
+
   vite: {
     plugins: [tailwindcss()],
     resolve: {

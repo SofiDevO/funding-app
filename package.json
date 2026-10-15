@@ -8,13 +8,15 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "infisical:pull": "infisical export --env=prod --format=dotenv --output-file=.dev.vars && wrangler dev --port 8787",
+    "infisical:pull": "infisical export --env=prod --format=dotenv --output-file=`.dev.vars",
     "infisical:push": "infisical secrets set --file=./.dev.vars --env=prod",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "generate-types": "wrangler types",
     "wrangler:deploy": "astro build && wrangler deploy",
+    "wrangler-migrate:local":"wrangler d1 migrations apply funding-app --local",
+    "wrangler-migrate:prod":"wrangler d1 migrations apply funding-app --remote",
     "type-check": "npx astro check"
   },
   "dependencies": {

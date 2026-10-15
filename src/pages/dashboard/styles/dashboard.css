@@ -6,8 +6,8 @@
  */
 
 .dashboard-layout {
-  --sidebar-width: 6rem;
-  --sidebar-padding: 2rem 1rem;
+  --sidebar-width: 4rem;
+  --sidebar-padding: 1rem .5rem;
   display: grid;
   grid-template-columns: var(--sidebar-width) 1fr;
   grid-template-rows: 1fr;
@@ -20,8 +20,8 @@
 
   /* `.sidebar.active` lo controla SideBar.astro ([data-sidebar]). */
   &:has(> .sidebar.active) {
-    --sidebar-width: 300px;
-    --sidebar-padding: 2rem;
+    --sidebar-width: 230px;
+    --sidebar-padding: .5rem;
   }
 
   @media (max-width: 768px) {

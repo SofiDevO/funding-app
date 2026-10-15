@@ -1,6 +1,7 @@
 ---
 const { username, avatar, email } = Astro.props;
-const { DEV } = import.meta.env;
+const maskedEmail =
+  email && email.includes("@") ? `*******@${email.split("@")[1]}` : "*******";
 ---
 
 <header class="profile-header">
@@ -19,13 +20,33 @@ const { DEV } = import.meta.env;
         <a href="dashboard/edit">
           <p class="avatar-username">{username}</p>
         </a>
-        <span class="avatar-email">
-          {!DEV ? email : `*******${email.split("@")[1]}`}
+        <span class="email-row" data-email-container>
+          <span
+            class="avatar-email"
+            data-email-text
+            data-email-full={email}
+            data-email-masked={maskedEmail}
+          >
+            {maskedEmail}
+          </span>
+          <button
+            type="button"
+            class="email-toggle"
+            data-email-toggle
+            aria-pressed="false"
+            aria-label="Mostrar email"
+          >
+            <iconify-icon icon="andrsrxn:eye" width="13" height="13" />
+          </button>
         </span>
       </div>
     )
   }
 </header>
+
+<script>
+  import "@/components/shared/utils/toggle-email";
+</script>
 
 <style>
   .profile-header {
@@ -34,21 +55,21 @@ const { DEV } = import.meta.env;
     align-items: center;
     justify-content: flex-start;
     position: relative;
-    padding: 1rem .3rem;
+    padding: 1rem .3rem 1rem .2rem;
     gap: 1rem;
 
     .avatar-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 60px;
-      height: 60px;
-      min-width: 60px;
-      min-height: 60px;
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      min-height: 50px;
       border-radius: 50%;
       padding: 0.2rem;
       position: relative;
-      border: double 1px var(--level-color);
+      border: solid 3px var(--level-color);
 
       .avatar-image {
         object-fit: cover;
@@ -90,7 +111,31 @@ const { DEV } = import.meta.env;
   }
   .avatar-email {
     color: white;
-    font-size: 1rem;
+    font-size: .8rem;
+  }
+  .email-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .email-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0.15rem;
+    cursor: pointer;
+    color: white;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    &:hover {
+      opacity: 1;
+    }
+    &.is-visible {
+      opacity: 1;
+      color: rgb(7, 255, 152);
+    }
   }
 </style>
 <style is:global>

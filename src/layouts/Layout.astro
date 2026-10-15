@@ -3,7 +3,7 @@ import GradientBg from "@/components/shared/gradient-bg/GradientBg.astro";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "@sofidevo/astro-dynamic-header/Header";
 
-import type  {
+import type {
   MenuItem,
   NavConfig,
   HeaderClassNames,
@@ -17,7 +17,6 @@ interface Props {
   type?: "website" | "article" | "profile";
   showHeader?: boolean;
 }
-
 
 const {
   title,
@@ -40,7 +39,7 @@ const menuItems = [
     <slot name="head" />
   </head>
   <GradientBg>
-    <body class="">
+    <body>
       <GradientBg>
         {
           showHeader && (
@@ -50,7 +49,6 @@ const menuItems = [
               headerType="fullscreen"
               classNames={{
                 header: "dinamic-header-bg py-1",
-
               }}
             >
               <a slot="logo" href="/" class="flex items-center gap-2">
@@ -64,12 +62,14 @@ const menuItems = [
 
               <div class="flex items-center gap-2" slot="actions">
                 <a
+                  data-astro-prefetch
                   class="bg-violet-600/30 text-violet-400 px-4 py-1 rounded-sm hover:text-white hover:bg-violet-500 transition-colors"
                   href="/login"
                 >
                   login
                 </a>
                 <a
+                  data-astro-prefetch
                   class="bg-violet-800 text-white px-4 py-1 rounded-sm hover:bg-violet-600 transition-colors shadow-2xl shadow-violet-500"
                   href="/register"
                 >

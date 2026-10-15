@@ -14,7 +14,10 @@ export default defineConfig({
   adapter: cloudflare(),
   site: "https://funding.sofidev.top/",
   output:'server',
-
+  prefetch:{
+    prefetchAll:true,
+    defaultStrategy: 'viewport'
+  },
   vite: {
     plugins: [tailwindcss()],
     resolve: {

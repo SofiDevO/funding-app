@@ -1,6 +1,6 @@
 export interface PaymentProvider{
 
-    createChekout(params:{
+    createCheckout(params:{
         goalId:string,
         amount:number,
         userName:string,

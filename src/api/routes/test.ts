@@ -1,10 +1,9 @@
 import { Hono } from "hono";
 import { env } from "cloudflare:workers";
 import type { AppEnv } from "@/types/env";
-import { success } from "astro:schema";
 
 const test = new Hono<AppEnv>();
-test.get("db", async (c) => {
+test.get("/db", async (c) => {
   const db = c.get("db");
 
   try {

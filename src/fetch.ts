@@ -10,6 +10,7 @@ import type { R2Bucket } from '@cloudflare/workers-types';
 
 
 import type { AppEnv } from "./types/env";
+import { HttpError } from "./api/errors/http-error";
 
 
 import testRoutes from "@/api/routes/test"
@@ -28,7 +29,14 @@ app.use("/*", async (c, next) => {
 
 app.onError((err,c)=>{
   console.error(err);
-  return c.json({error:"Not Found"});
+  if (err instanceof HttpError) {
+    return c.json({error: err.message}, err.httpCode);
+  }
+  return c.json({error:"Internal Server Error"}, 500);
+})
+
+app.notFound((c) => {
+  return c.json({ error: 'Not Found' }, 404);
 })
 
 

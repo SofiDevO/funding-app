@@ -32,7 +32,7 @@ const avatar = user.avatar_url
   <UserHeader {...user} {avatar} />
   <slot name="navmenu" />
   <footer class="sidebar-footer">
-    <a href="/settings">
+    <a href="/dashboard/settings">
       <iconify-icon icon="solar:settings-bold-duotone" width="20" height="20"
       ></iconify-icon>
       <span class="text text-sm">Ajustes</span></a
@@ -101,6 +101,10 @@ const avatar = user.avatar_url
         &.active {
           justify-content: center;
         }
+      }
+      & li {
+        display: flex;
+        justify-content: center;
       }
     }
 

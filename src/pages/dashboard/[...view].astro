@@ -3,8 +3,10 @@ import Layout from "@/layouts/Layout.astro";
 import DashboardLayout from "./_components/DahboardLayout.astro";
 import Overview from "./_views/Overview.astro";
 import Goals from "./_views/Goals.astro";
+import Settings from "./_views/Settings.astro";
 
-const views = { overview: Overview, goals: Goals } as const;
+const views = { overview: Overview, goals: Goals, settings: Settings } as const;
+
 type ViewKey = keyof typeof views;
 
 // [...view] -> undefined en /dashboard, "goals" en /dashboard/goals

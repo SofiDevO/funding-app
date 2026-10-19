@@ -71,10 +71,34 @@ export class D1DonationRepository implements DonationRepository {
       )
       .run();
     return id;
-  };
+  }
 
   async updateStatus(id: string, status: Donation["status"]): Promise<void> {
-    await this.db.prepare("UPDATE donations SET status = ? WERE id =?")
-    .bind(status,id).run();
-  };
+    await this.db
+      .prepare("UPDATE donations SET status = ? WHERE id = ?")
+      .bind(status, id)
+      .run();
+  }
+
+  async saveMessage(id: string, message: string): Promise<void> {
+    await this.db
+      .prepare(`UPDATE donations SET message = ? WHERE id = ?`)
+      .bind(message, id)
+      .run();
+  }
+
+  async findMessage(
+    limit: number = 50,
+  ): Promise<Pick<Donation, "userName" | "message" | "createdAt">[]> {
+    const rows = await executeQuery<DonationRow>(
+      this.db,
+      `SELECT user_name, message,created_at FROM donations WHERE message IS NOT NULL AND  message != '' AND status = 'completed' ORDER BY created_at DESC LIMIT ?`,
+      [limit],
+    )
+    return rows.map((row) => ({
+      userName: row.user_name,
+      message: row.message,
+      createdAt: row.created_at,
+    }));
+  }
 }

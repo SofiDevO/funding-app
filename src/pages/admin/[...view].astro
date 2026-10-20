@@ -13,7 +13,7 @@ type ViewKey = keyof typeof views;
 const key = (Astro.params.view ?? "overview") as string;
 
 if (!(key in views)) {
-  return new Response(null, { status: 404 });
+  return Astro.redirect('/404');
 }
 const View = views[key as ViewKey];
 ---

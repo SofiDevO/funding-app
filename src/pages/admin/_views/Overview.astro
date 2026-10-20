@@ -1,0 +1,26 @@
+---
+import Title from "@/components/shared/Title.astro";
+import BentoCard from "../_components/CardBento.astro";
+
+
+---
+
+<Title title="Overview" isGradient class="text-left" />
+
+<section class="grid-container">
+  <BentoCard title="Resumen"  />
+  <BentoCard title="Donaciones" />
+  <BentoCard title="Metas activas"  />
+  <BentoCard title="Top contributor"  />
+</section>
+
+<style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: minmax(8rem, auto);
+    gap: 1rem;
+    width: 100%;
+    align-content: start;
+  }
+</style>

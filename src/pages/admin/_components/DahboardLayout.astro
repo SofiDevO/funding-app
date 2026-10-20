@@ -9,23 +9,24 @@ const menu = [
     text: "Inicio",
   },
   {
-    href: "/dashboard",
+    href: "/admin",
     icon: "boxicons:dashboard-alt-filled",
     text: "overview",
   },
   {
-    href: "/dashboard/goals",
+    href: "/admin/goals",
     icon: "mage:goals",
     text: "Goals",
   },
 ];
+
 ---
 
 <div class="dashboard-layout">
   <SideBar>
     <NavBar slot="navmenu" {menu} pathName={Astro.url.pathname} />
   </SideBar>
-  <main class="dashboard-main">
+  <main class="dashboard-main flex flex-col w-full h-full items-center *:text-white">
     <slot name="dashboard-content" />
   </main>
 </div>

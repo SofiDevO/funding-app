@@ -69,4 +69,17 @@ export class LemonSqueezyProvider implements PaymentProvider {
 
     return { sessionId: checkout.data.id, url: checkout.data.attributes.url };
   }
+
+  //   async verifyWebhook(
+  //     body: string,
+  //     signature: string,
+  //   ): Promise<{
+  //     goalId: string;
+  //     userName: string;
+  //     userEmail: string;
+  //     amount: number;
+  //     paymentId: string;
+  //   } | null> {
+
+  //   }
 }

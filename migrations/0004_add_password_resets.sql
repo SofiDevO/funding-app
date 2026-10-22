@@ -1,15 +1,3 @@
--- migrations/0004_add_password_resets.sql
--- Tokens de recuperacion de contraseña (donantes).
--- Spec: vault [[Backend Architecture#Password Recovery]] (envio con Resend, testing).
---
--- token_hash: SHA-256 hex del token — el token en claro viaja SOLO en
---             el link del email (/reset?token=...&email=...), nunca se
---             persiste. Comparar en tiempo constante.
--- expires_at: al crear, datetime('now', '+60 minutes').
--- used_at: NULL = pendiente; con valor = consumido (un token = un uso).
--- Alcance: solo users. El admin recupera re-ejecutando el seeder
--- (scripts/seed-admin.js).
-
 CREATE TABLE password_resets (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,

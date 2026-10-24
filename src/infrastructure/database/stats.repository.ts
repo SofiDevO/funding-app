@@ -71,5 +71,7 @@ export class D1StatsRepository implements StatsRepository {
       donationCount: row.donationCount,
       lastDonation: row.lastDonation,
     };
+
+
   }
 }

@@ -1,0 +1,401 @@
+---
+import tipsData from "@/data/tips.json";
+import Title from "@/components/shared/Title.astro";
+
+/** Fila tal como vive en D1 / el JSON mock (snake_case). */
+interface TipRow {
+  id: string;
+  title: string;
+  product_name: string;
+  product_image: string;
+  price: number;
+  status: "active" | "inactive";
+  sort_order: number;
+}
+
+/** Forma que consume el componente (camelCase, igual que la futura entidad `Tip`). */
+interface Tip {
+  id: string;
+  title: string;
+  productName: string;
+  productImage: string;
+  price: number;
+  status: "active" | "inactive";
+  sortOrder: number;
+}
+
+const MIN_QUANTITY = 1;
+const MAX_QUANTITY = 20;
+const SECONDS_PER_ITEM = 1.2;
+
+const money = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
+// El mock imita la fila de D1: se filtra por status y se ordena por sort_order.
+const tips: Tip[] = (tipsData as TipRow[])
+  .filter((row) => row.status === "active")
+  .sort((a, b) => a.sort_order - b.sort_order)
+  .map((row) => ({
+    id: row.id,
+    title: row.title,
+    productName: row.product_name,
+    productImage: row.product_image,
+    price: row.price,
+    status: row.status,
+    sortOrder: row.sort_order,
+  }));
+
+// 3 sets para que el loop del marquee sea continuo.
+const loop = [...tips, ...tips, ...tips];
+const duration = `${tips.length * SECONDS_PER_ITEM}s`;
+---
+
+{
+  tips.length > 0 && (
+    <section id="tips" class="tips-carousel" aria-label="Regálame algo">
+
+
+      <div
+        class="tips-carousel__slider"
+        style={`--item-count: ${tips.length}; --animation-duration: ${duration};`}
+      >
+        <div class="tips-carousel__track">
+          {loop.map((tip) => (
+            <article
+              class="tips-carousel__item"
+              data-tip-card
+              data-tip-id={tip.id}
+              data-tip-price={tip.price}
+              data-tip-quantity={MIN_QUANTITY}
+              aria-label={`Regalar ${tip.productName}`}
+              tabindex="0"
+            >
+              <img
+                class="tips-carousel__image"
+                src={tip.productImage}
+                alt={tip.productName}
+                width="100"
+                height="100"
+                loading="lazy"
+                decoding="async"
+              />
+
+              <div
+                class="tips-carousel__tooltip"
+                role="group"
+                aria-label={`Cantidad y precio de ${tip.productName}`}
+              >
+                <p class="tips-carousel__price">
+                  {money.format(tip.price)}
+                  <span class="tips-carousel__unit">USD c/u</span>
+                </p>
+
+                <div class="tips-carousel__stepper">
+                  <button
+                    type="button"
+                    class="tips-carousel__step"
+                    data-tip-minus
+                    aria-label={`Quitar una unidad de ${tip.productName}`}
+                    disabled
+                  >
+                    <span aria-hidden="true">−</span>
+                  </button>
+
+                  <output
+                    class="tips-carousel__qty"
+                    data-tip-qty
+                    aria-live="polite"
+                  >
+                    {MIN_QUANTITY}
+                  </output>
+
+                  <button
+                    type="button"
+                    class="tips-carousel__step"
+                    data-tip-plus
+                    aria-label={`Agregar una unidad de ${tip.productName}`}
+                  >
+                    <span aria-hidden="true">+</span>
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  class="tips-carousel__invite"
+                  data-tip-invite
+                >
+                  Invitar
+                  <span class="tips-carousel__total" data-tip-total>
+                    {money.format(tip.price)}
+                  </span>
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .tips-carousel {
+    width: 100%;
+    margin-block: 4rem;
+    padding-block: 2rem;
+  }
+
+  .tips-carousel__header {
+    margin-bottom: 2rem;
+  }
+
+  .tips-carousel__slider {
+    --item-size: 8rem;
+    --gap: 1.5rem;
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    overflow: hidden;
+  }
+
+  .tips-carousel__slider::before,
+  .tips-carousel__slider::after {
+    position: absolute;
+    top: 0;
+    z-index: 4;
+    width: 150px;
+    height: 100%;
+    content: "";
+    pointer-events: none;
+  }
+
+  .tips-carousel__slider::before {
+    left: 0;
+    background: linear-gradient(to right, #120228, rgb(255 255 255 / 0%));
+  }
+
+  .tips-carousel__slider::after {
+    right: 0;
+    background: linear-gradient(to left, #12042a, rgb(255 255 255 / 0%));
+  }
+
+  .tips-carousel__track {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--gap);
+    box-sizing: border-box;
+    width: calc((var(--item-size) + var(--gap)) * var(--item-count) * 3);
+    margin: 0 auto;
+    padding-block: 8rem;
+    animation: tips-carousel-scroll var(--animation-duration) linear infinite;
+
+    /* Al pasar por un producto (o navegar con teclado) el loop se detiene. */
+    &:has(> .tips-carousel__item:hover),
+    &:has(> .tips-carousel__item:focus-within) {
+      animation-play-state: paused;
+    }
+  }
+
+  .tips-carousel__item {
+    position: relative;
+    display: flex;
+    flex: 0 0 var(--item-size);
+    justify-content: center;
+    align-items: center;
+    width: var(--item-size);
+    height: var(--item-size);
+    padding: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    transform: rotate(5deg);
+
+    &:hover,
+    &:focus-visible {
+      background: #51168880;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-amethyst-300);
+      outline-offset: 3px;
+    }
+
+    /* El item hovered manda: su tooltip queda por encima de los vecinos. */
+    &:hover,
+    &:focus-within {
+      z-index: 3;
+    }
+  }
+
+  .tips-carousel__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  .tips-carousel__tooltip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    width: 12.5rem;
+    padding: 0.5rem;
+    border: 1px solid rgb(170 104 223 / 32%);
+    border-radius: 0.9rem;
+    background: #0d0814;
+    box-shadow: 0 18px 40px rgb(0 0 0 / 55%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.95);
+    transform-origin: center;
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease,
+      visibility 0.18s;
+  }
+
+  .tips-carousel__item:hover .tips-carousel__tooltip,
+  .tips-carousel__item:focus-within .tips-carousel__tooltip {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, -140%) scale(1);
+  }
+
+  .tips-carousel__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: left;
+  }
+
+  .tips-carousel__unit {
+    color: rgb(255 255 255 / 45%);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .tips-carousel__stepper {
+    display: grid;
+    grid-template-columns: 2rem 1fr 2rem;
+    align-items: center;
+    margin-top: 0.5rem;
+    padding: 0.2rem;
+    border: 1px solid rgb(170 104 223 / 22%);
+    border-radius: 0.75rem;
+    background: rgb(255 255 255 / 3%);
+  }
+
+  .tips-carousel__step {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid rgb(170 104 223 / 22%);
+    border-radius: 0.6rem;
+    background: transparent;
+    color: #f5eefe;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      border-color: rgb(170 104 223 / 55%);
+      background: rgb(170 104 223 / 18%);
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  .tips-carousel__qty {
+    min-width: 1.5rem;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .tips-carousel__invite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    border-radius: 0.7rem;
+    background: var(--color-amethyst-600);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      background: var(--color-amethyst-700);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .tips-carousel__total {
+    padding-inline-start: 0.5rem;
+    border-inline-start: 1px solid rgb(255 255 255 / 35%);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tips-carousel__step:focus-visible,
+  .tips-carousel__invite:focus-visible {
+    outline: 2px solid var(--color-amethyst-300);
+    outline-offset: 2px;
+  }
+
+  @keyframes tips-carousel-scroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      /* Avanza exactamente un set de ítems para que el loop no salte. */
+      transform: translateX(
+        calc(-1 * (var(--item-size) + var(--gap)) * var(--item-count))
+      );
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tips-carousel__track {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import "@/components/infiniteCarousel/utils/tips";
+</script>

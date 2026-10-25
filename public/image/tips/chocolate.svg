@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Chocolate Snickers">
+  <defs>
+    <linearGradient id="chocolate-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a2410"/>
+      <stop offset="1" stop-color="#1a0d07"/>
+    </linearGradient>
+    <radialGradient id="chocolate-glow" cx="0.5" cy="0.3" r="0.65">
+      <stop offset="0" stop-color="#aa68df" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#aa68df" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="160" height="160" rx="28" fill="url(#chocolate-bg)"/>
+  <rect width="160" height="160" rx="28" fill="url(#chocolate-glow)"/>
+  <text x="80" y="82" font-size="72" text-anchor="middle" dominant-baseline="central" font-family="'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif">🍫</text>
+</svg>

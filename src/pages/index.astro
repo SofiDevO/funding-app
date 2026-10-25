@@ -3,17 +3,23 @@ import Layout from "@/layouts/Layout.astro";
 import GoalsCard from "@/components/goals/GoalsCard.astro";
 import goals from "@/data/goals.json";
 import Title from "@/components/shared/Title.astro";
+import InfiniteCarousel from "@/components/infiniteCarousel/InfiniteCarousel.astro";
 export const prerender = true;
 ---
 
 <Layout>
   <main
-    class="flex flex-col items-center justify-center h-full min-h-screen  w-full max-w-300 mx-auto px-8 pb-12  pt-25 "
+    class="flex flex-col items-center justify-center h-full min-h-screen w-full max-w-300 mx-auto px-8 pb-12 pt-25"
   >
-    <section class="flex flex-col w-full h-ful gap-4 items-center justify-center">
+    <section class="flex flex-col items-center justify-center w-full h-full">
+      <Title title="Buy me a Snack" isGradient />
+      <InfiniteCarousel />
+    </section>
+    <section
+      class="flex flex-col w-full h-ful gap-4 items-center justify-center"
+    >
       <Title as="h2" title="Metas activas" isGradient={true} />
       <div class="grid-container">
-
         {
           goals.map((goal) => (
             <GoalsCard

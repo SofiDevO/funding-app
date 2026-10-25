@@ -2,25 +2,104 @@
 import Title from "@/components/shared/Title.astro";
 import BentoCard from "../_components/CardBento.astro";
 
-
+const donation = {
+  topDonor: "Miguenlin",
+  amount: 20,
+};
 ---
 
-<Title title="Overview" isGradient class="text-left" />
+<Title title="Overview" isGradient />
 
 <section class="grid-container">
-  <BentoCard title="Resumen"  />
-  <BentoCard title="Donaciones" />
-  <BentoCard title="Metas activas"  />
-  <BentoCard title="Top contributor"  />
+  <BentoCard item="1" class="bg-violet-500/30 flex flex-col gap-3">
+    <Title isGradient as="h3" title="Top Donante" class="text-lg text-left" />
+    <div class="flex gap-3 *:text-teal-300 *:font-bold">
+      <span>{donation.topDonor}</span>
+      <span>${donation.amount}</span>
+    </div>
+  </BentoCard>
+
+  <BentoCard item="2" class="bg-violet-500/30 flex flex-col gap-3">
+    <Title isGradient as="h3" title="Balance" class="text-lg text-left" />
+    <div class="flex gap-3 *:text-teal-300 *:font-bold">
+      <span>$400.00</span>
+    </div>
+  </BentoCard>
+
+  <BentoCard item="3" class="bg-violet-500/30 flex flex-col gap-3">
+    <Title as="h3" title="Metas activas" class="text-lg text-left" isGradient />
+    <div class="flex gap-3 *:text-teal-300 *:font-bold">
+      <span class="text-2xl">3</span>
+    </div>
+  </BentoCard>
+
+  <BentoCard item="4" class="bg-violet-500/30 flex flex-col gap-3">
+    <Title as="h3" title="Snacks" class="text-lg text-left" isGradient />
+    <div class="flex gap-3 *:text-teal-300 *:font-bold">
+      <span class="text-2xl">3</span>
+    </div>
+  </BentoCard>
+
+  <BentoCard item="5">
+    <Title as="h3" title="Top contributor" />
+  </BentoCard>
+
+  <BentoCard item="6">
+    <Title as="h3" title="Top contributor" />
+  </BentoCard>
+
+  <BentoCard item="7">
+    <Title as="h3" title="Top contributor" />
+  </BentoCard>
+
+  <BentoCard item="8">
+    <Title as="h3" title="Top contributor" />
+  </BentoCard>
 </section>
 
-<style>
+<style is:inline>
   .grid-container {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-auto-rows: minmax(8rem, auto);
-    gap: 1rem;
     width: 100%;
-    align-content: start;
+    padding: 0 2rem;
+    height: 100dvh;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(5, 100px);
+    place-content: center;
+    gap: 1rem;
+    grid-template-areas:
+      "item-1 item-1 item-2 item-2  item-3 item-3 item-4 item-4 "
+      "item-5 item-5 item-5 item-6 item-6 item-6 item-7 item-7"
+      "item-5 item-5 item-5 item-6 item-6 item-6 item-7 item-7"
+      "item-5 item-5 item-5 item-6 item-6 item-6 item-8 item-8"
+      "item-5 item-5 item-5 item-6 item-6 item-6 item-8 item-8";
+  }
+  .item {
+    border-radius: 12px;
+    box-shadow: 1px 0px 3px 0px #9e60cf7d;
+  }
+  .item-1 {
+    grid-area: item-1;
+  }
+  .item-2 {
+    grid-area: item-2;
+  }
+  .item-3 {
+    grid-area: item-3;
+  }
+  .item-4 {
+    grid-area: item-4;
+  }
+  .item-5 {
+    grid-area: item-5;
+  }
+  .item-6 {
+    grid-area: item-6;
+  }
+  .item-7 {
+    grid-area: item-7;
+  }
+  .item-8 {
+    grid-area: item-8;
   }
 </style>

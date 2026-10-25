@@ -26,7 +26,7 @@ const menu = [
   <SideBar>
     <NavBar slot="navmenu" {menu} pathName={Astro.url.pathname} />
   </SideBar>
-  <main class="dashboard-main flex flex-col w-full h-full items-center *:text-white">
+  <main class="dashboard-main flex flex-col w-full h-full items-center ">
     <slot name="dashboard-content" />
   </main>
 </div>

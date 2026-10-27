@@ -59,10 +59,10 @@ const donation = {
 
 <style is:inline>
   .grid-container {
-    width: 100%;
-    padding: 0 2rem;
-    height: 100dvh;
     display: grid;
+    width: 100%;
+    height: 100dvh;
+    padding: 0 2rem;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(5, 100px);
     place-content: center;
@@ -73,33 +73,44 @@ const donation = {
       "item-5 item-5 item-5 item-6 item-6 item-6 item-7 item-7"
       "item-5 item-5 item-5 item-6 item-6 item-6 item-8 item-8"
       "item-5 item-5 item-5 item-6 item-6 item-6 item-8 item-8";
+
+    @media screen and (max-width: 768px) {
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-rows: auto;
+      grid-template-areas: unset;
+    }
   }
   .item {
     border-radius: 12px;
     box-shadow: 1px 0px 3px 0px #9e60cf7d;
+    width: 100%;
   }
-  .item-1 {
-    grid-area: item-1;
-  }
-  .item-2 {
-    grid-area: item-2;
-  }
-  .item-3 {
-    grid-area: item-3;
-  }
-  .item-4 {
-    grid-area: item-4;
-  }
-  .item-5 {
-    grid-area: item-5;
-  }
-  .item-6 {
-    grid-area: item-6;
-  }
-  .item-7 {
-    grid-area: item-7;
-  }
-  .item-8 {
-    grid-area: item-8;
+
+  @media screen and (min-width: 768px) {
+    .item-1 {
+      grid-area: item-1;
+    }
+    .item-2 {
+      grid-area: item-2;
+    }
+    .item-3 {
+      grid-area: item-3;
+    }
+    .item-4 {
+      grid-area: item-4;
+    }
+    .item-5 {
+      grid-area: item-5;
+    }
+    .item-6 {
+      grid-area: item-6;
+    }
+    .item-7 {
+      grid-area: item-7;
+    }
+    .item-8 {
+      grid-area: item-8;
+    }
   }
 </style>

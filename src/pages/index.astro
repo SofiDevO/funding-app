@@ -11,10 +11,6 @@ export const prerender = true;
   <main
     class="flex flex-col items-center justify-center h-full min-h-screen w-full max-w-300 mx-auto px-8 pb-12 pt-25"
   >
-    <section class="flex flex-col items-center justify-center w-full h-full">
-      <Title title="Buy me a Snack" isGradient />
-      <InfiniteCarousel />
-    </section>
     <section
       class="flex flex-col w-full h-ful gap-4 items-center justify-center"
     >
@@ -33,6 +29,9 @@ export const prerender = true;
           ))
         }
       </div>
+    </section>
+    <section class="flex flex-col items-center justify-center w-full h-full ">
+      <InfiniteCarousel />
     </section>
   </main>
 </Layout>

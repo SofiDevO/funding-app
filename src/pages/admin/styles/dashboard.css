@@ -24,7 +24,9 @@
     --sidebar-padding: .5rem;
   }
 
+
   @media (max-width: 768px) {
+    display: flex;
     --sidebar-width: 0;
     --sidebar-padding: 0;
   }

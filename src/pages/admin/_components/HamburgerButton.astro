@@ -1,0 +1,56 @@
+---
+import "../styles/hamburger.css";
+---
+
+<button class="hamburger hamburger--arrow" type="button">
+  <span class="hamburger-box">
+    <span class="hamburger-inner"></span>
+  </span>
+</button>
+
+<style is:inline>
+    .hamburger{
+        display: none;
+    }
+  @media screen and (max-width: 768px) {
+    .hamburger {
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 85%;
+      left: 67%;
+      z-index: 900;
+      width: 70px;
+      height: 70px;
+      padding: 0.41rem;
+      border-radius: 50%;
+      background: black;
+    }
+  }
+</style>
+
+<script is:inline>
+  function initMenu() {
+    const d = document;
+    function HamburgerButton(hamburgerBtn, panel, menuLink) {
+      d.addEventListener("click", (e) => {
+        if (
+          e.target.matches(hamburgerBtn) ||
+          e.target.matches(`${hamburgerBtn} *`)
+        ) {
+          d.querySelector(hamburgerBtn).classList.toggle("is-active");
+          d.querySelector(panel).classList.toggle("is-active");
+        }
+        if (e.target.matches(menuLink)) {
+          d.querySelector(hamburgerBtn).classList.remove("is-active");
+          d.querySelector(panel).classList.remove("is-active");
+        }
+      });
+    }
+    d.addEventListener("DOMContentLoaded", (e) => {
+      HamburgerButton(".hamburger", ".sidebar", ".header__link");
+    });
+  }
+  document.addEventListener("astro:page-load", initMenu());
+</script>

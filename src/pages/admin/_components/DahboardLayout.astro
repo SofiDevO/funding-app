@@ -2,6 +2,7 @@
 import "../styles/dashboard.css";
 import SideBar from "./SideBar.astro";
 import NavBar from "./NavBar.astro";
+import HamburgerButton from "./HamburgerButton.astro";
 const menu = [
   {
     href: "/",
@@ -28,5 +29,6 @@ const menu = [
   </SideBar>
   <main class="dashboard-main flex flex-col w-full h-full items-center ">
     <slot name="dashboard-content" />
+    <HamburgerButton/>
   </main>
 </div>

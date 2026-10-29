@@ -11,7 +11,7 @@
 		"binding": "ASSETS",
 	},
 	"observability": {
-		"enabled": true,
+		"enabled": false,
 	},
 	"vars": {
 		"LEMONSQUEEZY_STORE_ID": "486636",

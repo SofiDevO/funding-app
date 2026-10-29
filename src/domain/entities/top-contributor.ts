@@ -3,5 +3,5 @@ export interface TopContributor {
     profilePicture:string | null;
     total:number ;
     donationCount: number;
-    lastDonation: string;
+    lastDonationAt: string;
 }

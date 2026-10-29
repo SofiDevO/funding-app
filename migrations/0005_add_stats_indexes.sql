@@ -4,3 +4,5 @@ CREATE  INDEX idx_donations_completed_donor
 
 
 CREATE INDEX idx_donations_user_email ON donations(user_email);
+
+CREATE INDEX idx_users_email_lower ON users(LOWER(email));

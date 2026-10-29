@@ -70,16 +70,87 @@ export class LemonSqueezyProvider implements PaymentProvider {
     return { sessionId: checkout.data.id, url: checkout.data.attributes.url };
   }
 
-  //   async verifyWebhook(
-  //     body: string,
-  //     signature: string,
-  //   ): Promise<{
-  //     goalId: string;
-  //     userName: string;
-  //     userEmail: string;
-  //     amount: number;
-  //     paymentId: string;
-  //   } | null> {
+  // Verifica la firma y extrae la orden. Devuelve null si la firma no
+  // coincide, el payload es invalido o el evento no es un pago confirmado.
+  async verifyWebhook(
+    body: string,
+    signature: string,
+  ): Promise<VerifiedOrder | null> {
+    // Sin firma no hay nada que verificar: se rechaza antes de parsear JSON.
+    if (!signature) return null;
 
-  //   }
+    const valid = await verifyHmacSha256(
+      body,
+      signature,
+      this.config.webhookSecret,
+    );
+    if (!valid) return null;
+
+    let payload: {
+      meta?: { custom_data?: { goalId?: string } };
+      data?: {
+        id?: string;
+        attributes?: {
+          status?: string;
+          total?: number;
+          user_name?: string;
+          user_email?: string;
+        };
+      };
+    };
+
+    try {
+      payload = JSON.parse(body);
+    } catch {
+      return null;
+    }
+
+    const order = payload.data?.attributes;
+    const goalId = payload.meta?.custom_data?.goalId;
+    const paymentId = payload.data?.id;
+
+    // Solo ordenes pagadas: LS reenvia eventos (created, refunded...).
+    if (order?.status !== "paid") return null;
+    if (!goalId || !paymentId || typeof order.total !== "number") return null;
+
+    return {
+      goalId,
+      userName: String(order.user_name ?? ""),
+      userEmail: String(order.user_email ?? ""),
+      amount: order.total, // unidades de moneda ($25.00), NO centavos
+      paymentId,
+    };
+  }
+}
+
+// HMAC-SHA256 con Web Crypto + comparacion en tiempo constante.
+async function verifyHmacSha256(
+  body: string,
+  headerSignature: string,
+  secret: string,
+): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const digest = await crypto.subtle.sign("HMAC", key, encoder.encode(body));
+  const expected = [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+
+  // Un === cortocircuita al primer byte distinto y filtra informacion por
+  // tiempo. El OR acumulado recorre siempre todos los bytes.
+  const a = expected.toLowerCase();
+  const b = headerSignature.toLowerCase();
+  if (a.length !== b.length) return false;
+
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
 }

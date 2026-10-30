@@ -1,23 +1,38 @@
 ---
 import Title from "@/components/shared/Title.astro";
+import GoalCardAdmin from "../_components/GoalCardAdmin.astro";
+
+import GoalData from "@/data/goals.json";
+console.log(GoalData);
 ---
 
-<main class="flex flex-col w-full h-full max-w-2xl">
-  <div class="grid-container">
-    <article class="bg-slate-100 rounded-xl p-4 flex flex-col">
-      <div class="flex items-centers w-full justify-end">
-        <span class="py-1 px-2 bg-slate-400">Status</span>
-      </div>
-      <div class="flex itemsd-center gap-4">
-        <Title title="Goal title" class="text-left" isGradient />
-          <div class="flex flex-col gap-3">
-            <p>lorem ipsum XD</p>
-          </div>
-            <div class="overflow-hidden rounded-xl group h-full w-fit">
-                <img src="/image/goal.png" alt="Portada XD" class="group-hover:scale-100 w-full h-full object-cover">
-            </div>
-
-      </div>
-    </article>
+<main class="flex flex-col w-full h-full max-w-300">
+  <div class="grid-container gap-5">
+    {
+      GoalData.map((data) => (
+        <GoalCardAdmin
+          title={data.title}
+          status={data.status}
+          excerpt={data.excerpt}
+          image={data.image_url}
+        />
+      ))
+    };
   </div>
 </main>
+
+<style is:inline>
+  .grid-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 1rem;
+    width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    .grid-container {
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+</style>

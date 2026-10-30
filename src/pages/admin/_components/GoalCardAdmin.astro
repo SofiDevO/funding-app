@@ -1,0 +1,36 @@
+---
+import Title from "@/components/shared/Title.astro";
+
+interface Props {
+    title: string;
+    status?: string;
+    excerpt?: string;
+    image: string;
+  };
+
+
+const { title, status="draft", excerpt , image} = Astro.props as Props;
+
+
+---
+
+<article class="bg-slate-100 rounded-xl p-4 flex flex-col w-full">
+  <div class="flex items-centers w-full justify-end py-2">
+    <span class="py-1 px-2 rounded-xl bg-amethyst-400 text-amethyst-900"
+      >{status}</span
+    >
+  </div>
+  <div class="flex justify-between gap-4">
+    <div class="flex flex-col gap-3">
+      <Title as="h2" title={title} class="text-left" isGradient />
+      <p>{excerpt}</p>
+    </div>
+    <div class="overflow-hidden rounded-xl group h-60 w-60">
+      <img
+        src={image}
+        alt={`Banner for ${title}`}
+        class="transition-all group-hover:scale-100 w-full h-full object-cover"
+      />
+    </div>
+  </div>
+</article>

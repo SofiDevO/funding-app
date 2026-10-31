@@ -4,8 +4,9 @@ import DashboardLayout from "./_components/DahboardLayout.astro";
 import Overview from "./_views/Overview.astro";
 import Goals from "./_views/Goals.astro";
 import Settings from "./_views/Settings.astro";
+import Tips from "./_views/Tips.astro";
 
-const views = { overview: Overview, goals: Goals, settings: Settings } as const;
+const views = { overview: Overview, goals: Goals, settings: Settings, tips:Tips } as const;
 
 type ViewKey = keyof typeof views;
 

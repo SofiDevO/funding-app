@@ -1,0 +1,58 @@
+---
+import Title from "@/components/shared/Title.astro";
+import tipsData from "@/data/tips.json";
+
+console.log(tipsData);
+---
+
+<section class="flex flex-col w-full h-full max-x-[1200px]">
+  <div class="grid-container">
+    {
+      tipsData.map((data) => (
+        <div class="ga-4 flex flex-col bg-amethyst-200 px-4 py-1 rounded-xl">
+          <div class="flex justify-between w-full ">
+            <div class="flex flex-col gap-4">
+              <Title
+                title={data.title}
+                as="h2"
+                class="text-left text-amethyst-800"
+              />
+              <p>{data.product_name}</p>
+            </div>
+            <div class="overflow-hidden w-35 h-35 rounded-xl">
+              <img
+                src={data.product_image}
+                alt=""
+                class="object-contain w-full h-full"
+              />
+            </div>
+          </div>
+          <div class="mt-4 flex items-center  justify-between gap-3">
+            <span class="rounded-sm px-2 py-1 bg-amethyst-900 text-white font-bold text-xs">
+              {data.category}
+            </span>
+            <span class="rounded-lg px-2 py-1 bg-teal-300/30 border border-teal-600 text-teal-900 font-bold text-xs">
+              {data.status}
+            </span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .grid-container {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1rem;
+    width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    .grid-container {
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+</style>

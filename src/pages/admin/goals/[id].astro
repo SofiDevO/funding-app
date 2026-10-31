@@ -1,0 +1,173 @@
+---
+import type { Goal } from "@/domain/entities/goal";
+
+import GoalData from "@/data/goals.json";
+import DashboardLayout from "../_components/DahboardLayout.astro";
+import GoalForm from "../_components/GoalForm.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const goal = GoalData.find((item) => item.id === Astro.params.id);
+
+if (!goal) {
+  Astro.response.status = 404;
+}
+
+const statuses: Record<string, { label: string; className: string }> = {
+  active: { label: "Activa", className: "status-active" },
+  draft: { label: "Borrador", className: "status-draft" },
+  completed: { label: "Completada", className: "status-completed" },
+  paused: { label: "Pausada", className: "status-paused" },
+};
+
+const status = goal
+  ? (statuses[goal.status] ?? {
+      label: goal.status,
+      className: "status-unknown",
+    })
+  : null;
+
+
+const initialGoal = goal
+  ? {
+      id: goal.id,
+      title: goal.title,
+      excerpt: goal.excerpt,
+      description: goal.description,
+      imageUrl: goal.image_url,
+      productUrl: goal.product_url,
+      targetAmount: goal.target_amount,
+      rewards: goal.rewards,
+      gallery: goal.gallery,
+      status: goal.status as Goal["status"],
+    }
+  : undefined;
+---
+
+<Layout showHeader={false}>
+  <DashboardLayout>
+    <section class="goal-detail" slot="dashboard-content">
+      <a class="back-link" href="/admin/goals">Volver a metas</a>
+      {
+        goal && status ? (
+          <>
+            <header class="goal-heading">
+              <span class={`status-tag ${status.className}`}>
+                {status.label}
+              </span>
+            </header>
+
+            <GoalForm goal={initialGoal} mode="edit" />
+          </>
+        ) : (
+          <div class="not-found">
+            <h1>Meta no encontrada</h1>
+            <p>No existe una meta con ese identificador.</p>
+          </div>
+        )
+      }
+    </section>
+  </DashboardLayout>
+</Layout>
+
+<style is:inline>
+  .goal-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 75rem;
+  }
+
+  .back-link {
+    width: fit-content;
+    color: var(--color-amethyst-200);
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: white;
+    text-decoration: underline;
+  }
+
+  .goal-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    color: white;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.5rem;
+    color: var(--color-amethyst-300);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .goal-heading h1,
+  .not-found h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+
+  .excerpt {
+    margin-top: 0.4rem;
+    color: rgb(226 232 240);
+  }
+
+  .status-tag {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 1.65rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .status-active {
+    background: rgb(204 251 241);
+    color: rgb(15 118 110);
+  }
+
+  .status-draft {
+    background: rgb(226 232 240);
+    color: rgb(71 85 105);
+  }
+
+  .status-completed {
+    background: rgb(220 252 231);
+    color: rgb(21 128 61);
+  }
+
+  .status-paused {
+    background: rgb(254 243 199);
+    color: rgb(161 98 7);
+  }
+
+  .status-unknown {
+    background: rgb(237 233 254);
+    color: rgb(109 40 217);
+  }
+
+  .not-found {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background: rgb(248 250 252);
+    color: rgb(30 41 59);
+  }
+
+  .not-found p {
+    margin-top: 0.5rem;
+    color: rgb(71 85 105);
+  }
+
+  @media (max-width: 768px) {
+    .goal-heading {
+      flex-direction: column;
+    }
+  }
+</style>

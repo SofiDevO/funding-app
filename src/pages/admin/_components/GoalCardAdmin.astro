@@ -16,20 +16,20 @@ const { title, status="draft", excerpt , image} = Astro.props as Props;
 
 <article class="bg-slate-100 rounded-xl p-4 flex flex-col w-full">
   <div class="flex items-centers w-full justify-end py-2">
-    <span class="py-1 px-2 rounded-xl bg-amethyst-400 text-amethyst-900"
+    <span class="py-1 px-2 rounded-xl text-xs  bg-amethyst-400 text-amethyst-900"
       >{status}</span
     >
   </div>
-  <div class="flex justify-between gap-4">
+  <div class="flex justify-between gap-3">
     <div class="flex flex-col gap-3">
       <Title as="h2" title={title} class="text-left" isGradient />
       <p>{excerpt}</p>
     </div>
-    <div class="overflow-hidden rounded-xl group h-60 w-60">
+    <div class="overflow-hidden rounded-xl group h-full max-h-40 w-full max-w-60">
       <img
         src={image}
         alt={`Banner for ${title}`}
-        class="transition-all group-hover:scale-100 w-full h-full object-cover"
+        class="transition-transform duration-600 group-hover:scale-125 w-full h-full object-cover"
       />
     </div>
   </div>

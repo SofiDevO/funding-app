@@ -58,6 +58,7 @@ function parseJsonArray(value: string | null): string[] {
  * and serializes `rewards`/`gallery` as JSON text. Method contracts
  * are documented in the `GoalRepository` interface.
  */
+
 export class D1GoalRepository implements GoalRepository {
   constructor(private readonly db: D1Database) {}
 
@@ -116,7 +117,7 @@ export class D1GoalRepository implements GoalRepository {
         data.targetAmount,
         JSON.stringify(data.rewards ?? []),
         data.gallery ? JSON.stringify(data.gallery) : null,
-        data.status ?? null,
+        data.status ?? "darft",
       )
       .run();
 

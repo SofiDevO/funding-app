@@ -1,7 +1,6 @@
 ---
 import { SUGGESTED_AMOUNTS } from "@/consts";
 
-import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import GoalsData from "@/data/goals.json";
 import Layout from "@/layouts/Layout.astro";
 import Title from "@/components/shared/Title.astro";
@@ -9,84 +8,86 @@ import SwiperCarousel from "@/components/shared/swiper/SwiperCarousel";
 import Banner from "./__components/Banner.astro";
 import DonationCard from "./__components/DonationCard.astro";
 
-export const getStaticPaths = (async () => {
-  const goals = GoalsData;
-  return goals.map((goal) => ({
-    params: { id: goal.id },
-    props: { goal },
-  }));
-}) satisfies GetStaticPaths;
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-const { goal } = Astro.props;
-const {
-  title,
-  description,
-  image_url,
-  gallery,
-  product_url,
-  target_amount,
-  current_amount,
-  id,
-  rewards,
-} = goal;
+export const prerender = false;
 
-const progress = (current_amount / target_amount) * 100;
+const goal = GoalsData.find((item) => item.id === Astro.params.id);
+if (!goal) {
+  Astro.response.status = 404;
+}
+
+const progress = goal
+  ? ((goal.current_amount ?? 0) / goal.target_amount) * 100
+  : 0;
 const suggestedAmounts = SUGGESTED_AMOUNTS;
-export const prerender = true;
-
-
 ---
 
 <Layout showHeader={false}>
-  <main
-    class="flex px-4 pt-4 flex-col gap-10 w-full h-full min-h-screen max-w-300 mx-auto pb-10"
-  >
-    <Banner  title={title} image_url={image_url} id={id} />
-    <div class="w-full flex flex-col md:flex-row gap-6 justify-between">
-      <div
-        class="flex flex-col gap-8 px-1 w-full"
-        transition:name={`goal-description-${id}`}
-      >
-        <p class="text-balance text-gray-200 whitespace-pre-line text-base">
-          {description}
-        </p>
+  {
+    goal ? (
+      <main class="flex px-4 pt-4 flex-col gap-10 w-full h-full min-h-screen max-w-300 mx-auto pb-10">
+        <Banner title={goal.title} image_url={goal.image_url} id={goal.id} />
+        <div class="w-full flex flex-col md:flex-row gap-6 justify-between">
+          <div
+            class="flex flex-col gap-8 px-1 w-full"
+            transition:name={`goal-description-${goal.id}`}
+          >
+            <p class="text-balance text-gray-200 whitespace-pre-line text-base">
+              {goal.description}
+            </p>
+            {
+              goal.product_url && (
+                <a
+                  href={goal.product_url}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  class="bg-amethyst-950 w-fit text-gray-200 px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer text-base"
+                >
+                  Visitar el sitio del producto
+                </a>
+              )
+            }
+            <div class="flex flex-col gap-3">
+              <Title
+                as="h3"
+                title="Rewards de la meta"
+                isGradient={true}
+                class="text-left"
+              />
+              <ul class="pl-10">
+                {
+                  goal.rewards.map((reward) => (
+                    <li class="text-gray-200 list-disc text-base">{reward}</li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+
+          <DonationCard
+            id={goal.id}
+            progress={progress}
+            suggestedAmounts={suggestedAmounts}
+          />
+        </div>
         {
-          product_url && (
-            <a
-              href={product_url}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              class="bg-amethyst-950 w-fit text-gray-200 px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors cursor-pointer text-base"
-            >
-              Visitar el sitio del producto
-            </a>
+          goal.gallery && goal.gallery.length > 0 && (
+            <SwiperCarousel client:visible gallery={goal.gallery} />
           )
         }
-        <div class="flex flex-col gap-3">
-          <Title
-            as="h3"
-            title="Rewards de la meta"
-            isGradient={true}
-            class="text-left"
-          />
-          <ul class="pl-10">
-            {
-              rewards.map((reward) => (
-                <li class="text-gray-200 list-disc text-base">{reward}</li>
-              ))
-            }
-          </ul>
-        </div>
-      </div>
-
-      <DonationCard id={id} progress={progress} suggestedAmounts={suggestedAmounts} />
-    </div>
-    {
-      gallery && gallery.length > 0 && (
-        <SwiperCarousel client:visible gallery={gallery} />
-      )
-    }
-  </main>
+      </main>
+    ) : (
+      <main class="flex px-4 pt-10 flex-col gap-4 w-full min-h-screen max-w-300 mx-auto">
+        <Title as="h1" title="Meta no encontrada" isGradient={true} />
+        <p class="text-gray-200">No existe una meta con ese identificador.</p>
+        <a
+          href="/"
+          class="bg-amethyst-950 w-fit text-gray-200 px-3 py-2 rounded-md hover:bg-amethyst-800 transition-colors text-base"
+        >
+          Volver al inicio
+        </a>
+      </main>
+    )
+  }
 </Layout>
 
 <style is:inline>

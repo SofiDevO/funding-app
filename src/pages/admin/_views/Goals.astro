@@ -1,38 +1,245 @@
 ---
-import Title from "@/components/shared/Title.astro";
-import GoalCardAdmin from "../_components/GoalCardAdmin.astro";
-
 import GoalData from "@/data/goals.json";
-console.log(GoalData);
+
+const statuses: Record<string, { label: string; className: string }> = {
+  active: { label: "Activa", className: "status-active" },
+  draft: { label: "Borrador", className: "status-draft" },
+  completed: { label: "Completada", className: "status-completed" },
+  paused: { label: "Pausada", className: "status-paused" },
+};
+
+const currency = new Intl.NumberFormat("es-ES", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
 ---
 
 <main class="flex flex-col w-full h-full max-w-300">
-  <div class="grid-container gap-5">
-    {
-      GoalData.map((data) => (
-        <GoalCardAdmin
-          title={data.title}
-          status={data.status}
-          excerpt={data.excerpt}
-          image={data.image_url}
-        />
-      ))
-    };
-  </div>
+  <section class="goals-table-section" aria-label="Metas">
+    <div class="table-scroll" role="region" aria-label="Tabla de metas" tabindex="0">
+      <table class="goals-table">
+        <thead>
+          <tr>
+            <th scope="col">Meta</th>
+            <th scope="col">Recaudación</th>
+            <th scope="col">Estado</th>
+            <th scope="col"><span class="visually-hidden">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            GoalData.map((goal) => {
+              const status = statuses[goal.status] ?? {
+                label: goal.status,
+                className: "status-unknown",
+              };
+              const raised = goal.current_amount ?? 0;
+
+              return (
+                <tr>
+                  <td>
+                    <div class="goal-cell">
+                      <img src={goal.image_url} alt="" class="goal-image" />
+                      <div class="goal-copy">
+                        <strong>{goal.title}</strong>
+                        <span>{goal.excerpt}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="funding-cell">
+                      <strong>{currency.format(raised)}</strong>
+                      <span>de {currency.format(goal.target_amount)}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class={`status-tag ${status.className}`}>
+                      {status.label}
+                    </span>
+                  </td>
+                  <td class="action-cell">
+                    <a class="goal-link" href={`/admin/goals/${goal.id}`}>
+                      Editar
+                    </a>
+                  </td>
+                </tr>
+              );
+            })
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
 </main>
 
 <style is:inline>
-  .grid-container {
-    margin-top: 2rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 1rem;
+  .goals-table-section {
+    margin-top: 1rem;
     width: 100%;
   }
-  @media screen and (max-width: 768px) {
-    .grid-container {
-      gap: 2rem;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid rgb(148 163 184 / 30%);
+    border-radius: 0.75rem;
+    background: rgb(248 250 252 / 96%);
+    scrollbar-color: var(--color-amethyst-400) transparent;
+  }
+
+  .table-scroll:focus-visible {
+    outline: 2px solid var(--color-amethyst-500);
+    outline-offset: 3px;
+  }
+
+  .goals-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    color: rgb(30 41 59);
+    text-align: left;
+  }
+
+  .goals-table th {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgb(148 163 184 / 35%);
+    background: rgb(241 245 249);
+    color: rgb(71 85 105);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .goals-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgb(148 163 184 / 24%);
+    vertical-align: middle;
+  }
+
+  .goals-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .goals-table tbody tr:hover {
+    background: rgb(237 233 254 / 35%);
+  }
+
+  .goal-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 300px;
+  }
+
+  .goal-image {
+    width: 3.25rem;
+    height: 3.25rem;
+    flex: 0 0 3.25rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+  }
+
+  .goal-copy,
+  .funding-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .goal-copy strong,
+  .funding-cell strong {
+    color: rgb(30 41 59);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .goal-copy span,
+  .funding-cell span {
+    color: rgb(100 116 139);
+    font-size: 0.8rem;
+  }
+
+  .status-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.65rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .status-active {
+    background: rgb(204 251 241);
+    color: rgb(15 118 110);
+  }
+
+  .status-draft {
+    background: rgb(226 232 240);
+    color: rgb(71 85 105);
+  }
+
+  .status-completed {
+    background: rgb(220 252 231);
+    color: rgb(21 128 61);
+  }
+
+  .status-paused {
+    background: rgb(254 243 199);
+    color: rgb(161 98 7);
+  }
+
+  .status-unknown {
+    background: rgb(237 233 254);
+    color: rgb(109 40 217);
+  }
+
+  .action-cell {
+    text-align: right;
+  }
+
+  .goal-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 0.4rem;
+    background: var(--color-amethyst-950);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 150ms ease;
+  }
+
+  .goal-link:hover {
+    background: var(--color-amethyst-800);
+  }
+
+  .goal-link:focus-visible {
+    outline: 2px solid var(--color-amethyst-500);
+    outline-offset: 3px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 768px) {
+    .goals-table-section {
+      margin-top: 0;
     }
   }
 </style>

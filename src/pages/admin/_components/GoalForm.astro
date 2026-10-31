@@ -1,0 +1,288 @@
+---
+import type { Goal } from "@/domain/entities/goal";
+
+/**
+ * Formulario reutilizable de metas.
+ *
+ * `mode="edit"` -> precarga los valores y hace PUT /api/goals/:id.
+ * `mode="create"` -> arranca vacio y hace POST /api/goals.
+ *
+ * Los botones de accion viven FUERA del <form> y lo referencian con el
+ * atributo `form` (HTML nativo), para poder maquetar la barra de acciones
+ * debajo sin anidar controles. La logica cliente esta en `goal-form.ts`.
+ */
+interface GoalFormValues {
+  id?: string;
+  title?: string;
+  excerpt?: string;
+  description?: string;
+  imageUrl?: string;
+  productUrl?: string | null;
+  targetAmount?: number;
+  rewards?: string[];
+  gallery?: string[];
+  status?: Goal["status"];
+}
+
+interface Props {
+  goal?: GoalFormValues;
+  mode?: "create" | "edit";
+  submitLabel?: string;
+}
+
+const { goal, mode = goal?.id ? "edit" : "create", submitLabel } = Astro.props;
+
+const isEdit = mode === "edit";
+const formId = `goal-form-${goal?.id ?? "new"}`;
+const actionLabel = submitLabel ?? (isEdit ? "Actualizar" : "Crear meta");
+
+const values = {
+  title: goal?.title ?? "",
+  excerpt: goal?.excerpt ?? "",
+  description: goal?.description ?? "",
+  imageUrl: goal?.imageUrl ?? "",
+  productUrl: goal?.productUrl ?? "",
+  targetAmount: goal?.targetAmount ?? "",
+  rewards: (goal?.rewards ?? []).join("\n"),
+  gallery: goal?.gallery ?? [],
+  status: goal?.status ?? "draft",
+};
+
+const statusOptions: Array<{ value: Goal["status"]; label: string }> = [
+  { value: "draft", label: "Borrador" },
+  { value: "active", label: "Activa" },
+  { value: "completed", label: "Completada" },
+  { value: "paused", label: "Pausada" },
+];
+
+const labelClass = "text-sm font-semibold text-slate-700";
+const fieldClass =
+  "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-amethyst-500 focus:ring-2 focus:ring-amethyst-500/30";
+const hintClass = "text-xs text-slate-500";
+const fieldWrapperClass = "flex flex-col gap-2";
+---
+
+<div
+  class="w-full max-w-5xl"
+  data-goal-form-shell
+  data-goal-mode={mode}
+  data-goal-id={goal?.id ?? ""}
+>
+  <form
+    id={formId}
+    class="grid gap-5 rounded-xl border border-slate-300/40 bg-slate-50 p-6 text-slate-800 shadow-md md:grid-cols-2"
+    data-goal-form
+  >
+    <div class={fieldWrapperClass}>
+      <label for={`${formId}-title`} class={labelClass}>Título</label>
+      <input
+        id={`${formId}-title`}
+        name="title"
+        type="text"
+        class={fieldClass}
+        value={values.title}
+        required
+        minlength="3"
+        maxlength="255"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class={fieldWrapperClass}>
+      <label for={`${formId}-status`} class={labelClass}>Estado</label>
+      <select id={`${formId}-status`} name="status" class={fieldClass} required>
+        {
+          statusOptions.map((option) => (
+            <option value={option.value} selected={option.value === values.status}>
+              {option.label}
+            </option>
+          ))
+        }
+      </select>
+      <p class={hintClass}>Las metas nuevas empiezan como borrador.</p>
+    </div>
+
+    <div class={`${fieldWrapperClass} md:col-span-2`}>
+      <label for={`${formId}-excerpt`} class={labelClass}>Excerpt</label>
+      <input
+        id={`${formId}-excerpt`}
+        name="excerpt"
+        type="text"
+        class={fieldClass}
+        value={values.excerpt}
+        required
+        minlength="10"
+        maxlength="160"
+        autocomplete="off"
+      />
+      <p class={hintClass}>Resumen corto de la card del home (10-160 caracteres).</p>
+    </div>
+
+    <div class={`${fieldWrapperClass} md:col-span-2`}>
+      <label for={`${formId}-description`} class={labelClass}>Descripción</label>
+      <textarea
+        id={`${formId}-description`}
+        name="description"
+        class={`${fieldClass} min-h-36 resize-y`}
+        required
+        minlength="10"
+        maxlength="2000"
+      >{values.description}</textarea>
+      <p class={hintClass}>Texto completo de la pagina de detalle (10-2000 caracteres).</p>
+    </div>
+
+    <div class={`${fieldWrapperClass} md:col-span-2`}>
+      <label for={`${formId}-imageFile`} class={labelClass}>Imagen de portada</label>
+      <div class="flex flex-wrap items-start gap-4">
+        <img
+          src={values.imageUrl || "/image/goal.png"}
+          alt="Vista previa de la portada"
+          class="h-24 w-36 rounded-md border border-slate-300 bg-slate-200 object-cover"
+          data-cover-preview
+        />
+        <div class="flex min-w-56 flex-col gap-2">
+          <input
+            id={`${formId}-imageFile`}
+            name="imageFile"
+            type="file"
+            accept="image/*"
+            class="block w-full text-sm text-slate-600 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-amethyst-950 file:px-3 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-amethyst-800"
+            data-cover-input
+            required={!values.imageUrl}
+          />
+          <p class={hintClass}>JPG, PNG o WebP recomendados. Se sube a R2 y se guarda la URL pública.</p>
+          <p class={hintClass} data-cover-name hidden></p>
+        </div>
+      </div>
+      <input type="hidden" name="imageUrl" value={values.imageUrl} data-cover-url />
+    </div>
+
+    <div class={`${fieldWrapperClass} md:col-span-2`}>
+      <label for={`${formId}-productUrl`} class={labelClass}>URL del producto</label>
+      <input
+        id={`${formId}-productUrl`}
+        name="productUrl"
+        type="text"
+        inputmode="url"
+        class={fieldClass}
+        value={values.productUrl}
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <p class={hintClass}>Opcional. Se muestra como enlace en el detalle de la meta.</p>
+    </div>
+
+    <div class={fieldWrapperClass}>
+      <label for={`${formId}-targetAmount`} class={labelClass}>Objetivo (USD)</label>
+      <input
+        id={`${formId}-targetAmount`}
+        name="targetAmount"
+        type="number"
+        class={fieldClass}
+        value={values.targetAmount}
+        required
+        min="1"
+        step="0.01"
+        inputmode="decimal"
+      />
+    </div>
+
+    <div class={fieldWrapperClass}>
+      <label for={`${formId}-rewards`} class={labelClass}>Rewards</label>
+      <textarea
+        id={`${formId}-rewards`}
+        name="rewards"
+        class={`${fieldClass} min-h-28 resize-y`}
+        spellcheck="false"
+      >{values.rewards}</textarea>
+      <p class={hintClass}>Una recompensa por linea (max. 20).</p>
+    </div>
+
+    <div class={`${fieldWrapperClass} md:col-span-2`}>
+      <label for={`${formId}-galleryFiles`} class={labelClass}>Galería</label>
+      {
+        values.gallery.length > 0 ? (
+          <ul class="flex flex-wrap gap-3" data-gallery-current>
+            {values.gallery.map((url, index) => (
+              <li class="goal-gallery-item relative overflow-hidden rounded-md border border-slate-300 bg-white">
+                <img
+                  src={url}
+                  alt={`Imagen ${index + 1} de la galería`}
+                  class="h-20 w-28 object-cover"
+                />
+                <label class="flex items-center justify-center gap-1 border-t border-slate-200 px-2 py-1 text-xs font-semibold text-slate-600">
+                  <input
+                    type="checkbox"
+                    name="removeGallery"
+                    value={index}
+                    aria-label={`Quitar imagen ${index + 1}`}
+                    class="accent-red-600"
+                    data-gallery-remove
+                  />
+                  Quitar
+                </label>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class={`${hintClass} italic`}>Sin imágenes todavía.</p>
+        )
+      }
+      <input
+        id={`${formId}-galleryFiles`}
+        name="galleryFiles"
+        type="file"
+        accept="image/*"
+        multiple
+        class="block w-full text-sm text-slate-600 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-amethyst-950 file:px-3 file:py-2 file:text-sm file:font-bold file:text-white hover:file:bg-amethyst-800"
+        data-gallery-input
+      />
+      <p class={hintClass}>
+        Puedes seleccionar varias. Máximo 10 imágenes en total (las marcadas como "Quitar" se eliminan al guardar).
+      </p>
+      <div class="flex flex-wrap gap-3" data-gallery-new></div>
+      <input type="hidden" name="gallery" value={values.gallery.join("\n")} data-gallery-urls />
+    </div>
+  </form>
+
+  <div class="flex flex-wrap items-center gap-3 pt-4">
+    <button
+      type="submit"
+      form={formId}
+      class="rounded-md bg-amethyst-950 px-4 py-2 text-sm font-bold text-white transition hover:bg-amethyst-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amethyst-500 disabled:cursor-not-allowed disabled:opacity-60"
+      data-goal-submit
+    >
+      {actionLabel}
+    </button>
+
+    {
+      isEdit && (
+        <button
+          type="button"
+          class="rounded-md border border-red-300 bg-red-50 px-4 py-2 text-sm font-bold text-red-700 transition hover:bg-red-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+          data-goal-delete
+        >
+          Eliminar
+        </button>
+      )
+    }
+  </div>
+
+  <p
+    class="mt-3 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700"
+    data-goal-error
+    role="alert"
+    hidden
+  >
+  </p>
+</div>
+
+<style is:inline>
+  .goal-gallery-item:has(input:checked) {
+    opacity: 0.45;
+  }
+</style>
+
+<script>
+  import "./goal-form";
+</script>

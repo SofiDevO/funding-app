@@ -11,7 +11,7 @@ export class R2Storage {
     if (!imageKey.trim()) {
       throw new Error("imageKey is required");
     };
-    await this.bucket.put(imageKey, arrayBuffer);
+    await this.bucket.put(this.buildKey(imageKey), arrayBuffer);
   };
 
   getUrl(imageKey:string):string {

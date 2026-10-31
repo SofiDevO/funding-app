@@ -1,9 +1,8 @@
-import type {R2Storage} from '../infrastructure/storage/R2-storage';
-
+import { StorageService } from "@/domain/interfaces/storage-service";
 
 export type Variables ={
     db: D1Database,
-    r2: R2Storage
+    r2: StorageService
 }
 
 export type AppEnv = {

@@ -1,4 +1,4 @@
-import { StorageService } from "@/domain/interfaces/storage-service";
+import type { StorageService } from "@/domain/interfaces/storage-service";
 import type { R2Bucket } from "@cloudflare/workers-types";
 
 export class R2Storage implements StorageService {
@@ -17,7 +17,7 @@ export class R2Storage implements StorageService {
     await this.bucket.put(this.buildKey(imageKey), arrayBuffer, {
       httpMetadata: {
         contentType,
-        cacheControl: "public, maz-age=21536000, inmutable",
+        cacheControl: "public, max-age=31536000, immutable",
       },
     });
   }

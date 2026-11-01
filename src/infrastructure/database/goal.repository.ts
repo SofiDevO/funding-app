@@ -117,7 +117,7 @@ export class D1GoalRepository implements GoalRepository {
         data.targetAmount,
         JSON.stringify(data.rewards ?? []),
         data.gallery ? JSON.stringify(data.gallery) : null,
-        data.status ?? "darft",
+        data.status ?? "draft",
       )
       .run();
 

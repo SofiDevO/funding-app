@@ -1,4 +1,4 @@
-import { StorageService } from "@/domain/interfaces/storage-service";
+import type { StorageService } from "@/domain/interfaces/storage-service";
 
 export type Variables ={
     db: D1Database,

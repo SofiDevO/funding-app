@@ -33,7 +33,7 @@ import type { Goal, GoalCreate } from "../entities/goal";
  * import { Hono } from "hono";
  * import type { AppEnv } from "../../types/env";
  * import { D1GoalRepository } from "../../infrastructure/database/goal.repository";
- * import { GetGoals } from "../../application/use-cases/get-goals";
+ * import { GetGoals } from "../../application/use-cases/goals/get";
  *
  * const goals = new Hono<AppEnv>();
  *

@@ -13,7 +13,10 @@ import type { AppEnv } from "./types/env";
 import { HttpError } from "./api/errors/http-error";
 
 
-import testRoutes from "@/api/routes/test"
+// import testRoutes from "@/api/routes/test"
+import goalsRoutes from "@/api/routes/goals";
+
+
 
 const app = new Hono<AppEnv>();
 const workerEnv = env as Cloudflare.Env;
@@ -40,7 +43,8 @@ app.notFound((c) => {
 })
 
 
-app.route("/api/test", testRoutes);
+// app.route("/api/test", testRoutes);
+app.route("/api/goals", goalsRoutes);
 
 app.use(sessions());
 app.use(actions());

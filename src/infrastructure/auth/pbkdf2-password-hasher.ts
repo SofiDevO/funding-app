@@ -31,8 +31,7 @@ async function derive(
   return new Uint8Array(bits);
 }
 
-// Tiempo constante: recorre todos los bytes aunque el primero ya difiera.
-// Un `===` corta en el primer byte distinto y filtra informacion por tiempo.
+
 function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
   if (a.length !== b.length) return false;
   let diff = 0;
@@ -42,7 +41,7 @@ function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
 
 export class Pbkdf2PasswordHasher implements PasswordHasher {
   async hash(plain: string): Promise<string> {
-    // Salt aleatorio por password: la misma password produce hashes distintos.
+
     const salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
     const derived = await derive(plain, salt, ITERATIONS);
     return `${SCHEME}$${ITERATIONS}$${toHex(salt)}$${toHex(derived)}`;

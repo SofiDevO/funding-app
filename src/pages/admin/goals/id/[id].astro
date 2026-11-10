@@ -2,8 +2,8 @@
 import type { Goal } from "@/domain/entities/goal";
 
 import GoalData from "@/data/goals.json";
-import DashboardLayout from "../_components/DahboardLayout.astro";
-import GoalForm from "../_components/GoalForm.astro";
+import DashboardLayout from "../../_components/DahboardLayout.astro";
+import GoalForm from "../../_components/GoalForm.astro";
 import Layout from "@/layouts/Layout.astro";
 
 const goal = GoalData.find((item) => item.id === Astro.params.id);
@@ -25,7 +25,6 @@ const status = goal
       className: "status-unknown",
     })
   : null;
-
 
 const initialGoal = goal
   ? {

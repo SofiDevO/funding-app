@@ -1,10 +1,14 @@
 ---
+import Layout from "@/layouts/Layout.astro";
 import GoalForm from "../_components/GoalForm.astro";
-import DashboardLayout from "../_components/DashboardLayout.astro";
-
+import DashboardLayout from "../_components/DahboardLayout.astro";
 ---
 
-<DashboardLayout title="Create New Goal">
-    <h1>Hola</h1>
-    <GoalForm mode="create"/>
-</DashboardLayout>
+<Layout showHeader={false}>
+    <DashboardLayout>
+        <section  slot="dashboard-content" class="flex flex-col gap-4 w-full max-w-600">
+            <a class="text-blue-500 hover:text-blue-700" href="/admin/goals">Volver a metas</a>
+            <GoalForm mode="create" />
+        </section>
+    </DashboardLayout>
+</Layout>

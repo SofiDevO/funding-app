@@ -9,3 +9,10 @@ export type AppEnv = {
     Bindings: Cloudflare.Env
     Variables: Variables
 }
+export type AuthRole = "admin" | "donor";
+
+export interface AuthUser {
+    id:string;
+    username:string;
+    role:AuthRole;
+}

@@ -1,14 +1,25 @@
 ---
 interface Props {
-    action?: string;
-    novalidate?: boolean;
-    class?: string;
+  action?: string;
+  novalidate?: boolean;
+  class?: string;
 }
 const { action, class: className, ...rest } = Astro.props;
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from "tailwind-merge";
 ---
 
-<form action={action} class={twMerge("flex flex-col items-start gap-4 bg-amethyst-300/40 py-5 px-4 rounded-2xl shadow-md w-full ", className)} {...rest}>
-    <slot/>
-    <input type="submit" value="Enviar" class="bg-amethyst-600 text-white text-sm px-4 py-2 rounded cursor-pointer hover:bg-amethyst-800 transition-colors duration-300" />
+<form
+  action={action}
+  class={twMerge(
+    "flex flex-col items-start gap-4 bg-amethyst-300/40 py-5 px-4 rounded-2xl shadow-md w-full ",
+    className,
+  )}
+  {...rest}
+>
+  <slot />
+  <input
+    type="submit"
+    value="Enviar"
+    class="bg-amethyst-600 text-white text-sm px-4 py-2 rounded cursor-pointer hover:bg-amethyst-800 transition-colors duration-300"
+  />
 </form>

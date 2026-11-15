@@ -6,62 +6,67 @@ console.log(tipsData);
 ---
 
 <section class="flex flex-col w-full h-full max-x-[1200px]">
+  <div class="flex items-center justify-end w-full">
+    <a
+      href="/admin/tips/new"
+      class="bg-amethyst-600 px-2 py-1 font-bold text-white rounded-md"
+    >
+      Add Tip
+    </a>
+  </div>
   <div class="grid-container">
-    {
-      tipsData.map((data) => (
-        <div class="ga-4 flex flex-col bg-amethyst-200 px-4 py-1 rounded-xl">
-          <div class="flex justify-between w-full ">
-            <div class="flex flex-col gap-4">
-              <Title
-                title={data.title}
-                as="h2"
-                class="text-xl text-left text-amethyst-800"
-              />
-              <p>{data.product_name}</p>
-            </div>
-            <div class="overflow-hidden w-35 h-35 rounded-xl">
-              <img
-                src={data.product_image}
-                alt=""
-                class="object-contain w-full h-full"
-              />
-            </div>
+    {tipsData.map((data) => (
+      <div class="ga-4 flex flex-col bg-amethyst-200 px-4 py-1 rounded-xl">
+        <div class="flex justify-between w-full">
+          <div class="flex flex-col gap-4">
+            <Title
+              title={data.title}
+              as="h2"
+              class="text-xl text-left text-amethyst-800"
+            />
+            <p>{data.product_name}</p>
           </div>
-          <div class="mt-4 flex items-center   gap-3">
-            <span class="rounded-sm px-2 py-1 bg-amethyst-900 text-white font-bold text-xs">
-              {data.category}
-            </span>
-            <span class="rounded-lg px-2 py-1 bg-teal-300/30 border border-teal-600 text-teal-900 font-bold text-xs">
-              Price: ${data.price}
-            </span>
-            <a
-              href={`/admin/tips/${data.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="ml-auto rounded-lg p-2 flex items-center gap-1  bg-amethyst-600 text-white font-bold text-xs hover:bg-amethyst-700"
-            >
-              <iconify-icon
-                icon="andrsrxn:field-edit"
-                style="color: var(--accent-color)"
-                height="20"
-                width="20"
-              />
-              Edit
-            </a>
-            <button class="rounded-lg px-2 py-1 flex items-center gap-1  bg-red-600/50 border border-red-700 text-white font-bold text-xs hover:bg-red-700 cursor-pointer">
-              <iconify-icon
-                icon="mdi:delete"
-                style="color: var(--accent-color)"
-                height="20"
-                width="20"
-              />
-              Delete
-
-            </button>
+          <div class="overflow-hidden w-35 h-35 rounded-xl">
+            <img
+              src={data.product_image}
+              alt=""
+              class="object-contain w-full h-full"
+            />
           </div>
         </div>
-      ))
-    }
+        <div class="mt-4 flex items-center gap-3">
+          <span class="rounded-sm px-2 py-1 bg-amethyst-900 text-white font-bold text-xs">
+            {data.category}
+          </span>
+          <span class="rounded-lg px-2 py-1 bg-teal-300/30 border border-teal-600 text-teal-900 font-bold text-xs">
+            Price: ${data.price}
+          </span>
+          <a
+            href={`/admin/tips/${data.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="ml-auto rounded-lg p-2 flex items-center gap-1 bg-amethyst-600 text-white font-bold text-xs hover:bg-amethyst-700"
+          >
+            <iconify-icon
+              icon="andrsrxn:field-edit"
+              style="color: var(--accent-color)"
+              height="20"
+              width="20"
+            />
+            Edit
+          </a>
+          <button class="rounded-lg px-2 py-1 flex items-center gap-1 bg-red-600/50 border border-red-700 text-white font-bold text-xs hover:bg-red-700 cursor-pointer">
+            <iconify-icon
+              icon="mdi:delete"
+              style="color: var(--accent-color)"
+              height="20"
+              width="20"
+            />
+            Delete
+          </button>
+        </div>
+      </div>
+    ))}
   </div>
 </section>
 

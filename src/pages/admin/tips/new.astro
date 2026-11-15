@@ -1,0 +1,13 @@
+---
+import DashboardLayout from "../_components/DahboardLayout.astro";
+import TipsForm from "../_components/TipsForm.astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout showHeader={false}>
+  <DashboardLayout>
+    <section class="flex flex-col items-center w-full" slot="dashboard-content">
+      <TipsForm mode="create" />
+    </section>
+  </DashboardLayout>
+</Layout>

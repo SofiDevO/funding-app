@@ -1,4 +1,3 @@
-import type { D1Database } from "@cloudflare/workers-types";
 import type { Goal, GoalCreate } from "../../domain/entities/goal";
 import type { GoalRepository } from "../../domain/interfaces/goal.repository";
 import { executeQuery, executeSingle } from "./d1-connection";

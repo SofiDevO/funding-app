@@ -1,4 +1,3 @@
-import type { D1Database } from "@cloudflare/workers-types";
 import type { TopContributor } from "@/domain/entities/top-contributor";
 import type { StatsRepository } from "@/domain/interfaces/stats.repository";
 import { executeSingle } from "./d1-connection";

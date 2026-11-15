@@ -6,7 +6,6 @@ import { env } from 'cloudflare:workers';
 
 import { getDB } from "./infrastructure/database/d1-connection"
 import { R2Storage } from "./infrastructure/storage/R2-storage"
-import type { R2Bucket } from '@cloudflare/workers-types';
 
 
 import type { AppEnv } from "./types/env";
@@ -26,7 +25,7 @@ app.use('/api/*', cors());
 
 app.use("/*", async (c, next) => {
   c.set("db", getDB({ env }))
-  c.set("r2", new R2Storage(workerEnv.R2_BUCKET as unknown as R2Bucket, workerEnv.R2_PUBLIC_URL))
+  c.set("r2", new R2Storage(workerEnv.R2_BUCKET, workerEnv.R2_PUBLIC_URL))
   await next()
 });
 

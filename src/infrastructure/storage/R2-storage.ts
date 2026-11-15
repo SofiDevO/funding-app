@@ -1,5 +1,4 @@
 import type { StorageService } from "@/domain/interfaces/storage-service";
-import type { R2Bucket } from "@cloudflare/workers-types";
 
 export class R2Storage implements StorageService {
   constructor(

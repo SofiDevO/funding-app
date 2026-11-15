@@ -1,4 +1,3 @@
-import { D1Database } from "@cloudflare/workers-types";
 import type { Donation, DonationCreate } from "@/domain/entities/donation";
 import type { DonationRepository } from "@/domain/interfaces/donation.repository";
 import { executeQuery, executeSingle } from "./d1-connection";

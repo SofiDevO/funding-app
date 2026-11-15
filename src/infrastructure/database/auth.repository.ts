@@ -1,4 +1,3 @@
-import type { D1Database } from "@cloudflare/workers-types";
 import type { AuthAccount, AuthRepository } from "@/domain/interfaces/auth.repository";
 import { executeSingle } from "./d1-connection";
 
@@ -9,7 +8,7 @@ export class D1AuthRepository implements AuthRepository{
     async findByIdentifier(identifier:string):Promise<AuthAccount | null>{
         const admin = await executeSingle<AuthAccount>(
             this.db,
-            `SELECT id, email, username, password_hash AS passwordHash, NULL AS profilePicture, 'admin' AS role FROM admin WHERELOWER(email) = LOWER(?) OR username = ? LIMIT 1`,
+            `SELECT id, email, username, password_hash AS passwordHash, NULL AS profilePicture, 'admin' AS role FROM admin WHERE LOWER(email) = LOWER(?) OR username = ? LIMIT 1`,
             [identifier, identifier]
         );
 
@@ -21,7 +20,7 @@ export class D1AuthRepository implements AuthRepository{
         );
     };
 
-    async emailOrUserTaken(email:string, username:string):Promise<boolean>{
+    async emailOrUsernameTaken(email:string, username:string):Promise<boolean>{
         const row = await executeSingle<{found:number}>(
             this.db,
             `SELECT 1 AS found FROM admin WHERE email = ?  OR username = ? UNION ALL SELECT 1 AS found FROM users WHERE email = ? OR username = ? LIMIT 1`,

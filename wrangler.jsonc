@@ -16,7 +16,8 @@
 	"vars": {
 		"LEMONSQUEEZY_STORE_ID": "486636",
 		"LEMONSQUEEZY_VARIANT_ID": "2188416",
-		"R2_PUBLIC_URL": "https://funding-app-bucket.sofidev.top"
+		"R2_PUBLIC_URL": "https://funding-app-bucket.sofidev.top",
+		"TWITCH_CHANNEL_LOGIN": "sofidev"
 	},
 	"d1_databases": [
 		{

@@ -1,0 +1,158 @@
+---
+interface Props {
+  /** Optional classes for positioning or spacing. */
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const offlineLabel = "Offline";
+const liveLabel = "Estamos en vivo";
+---
+
+<div
+  class:list={[
+    "live-signal-group flex w-fit items-center gap-2",
+    className,
+  ]}
+  data-live-signal
+  data-live="false"
+  data-live-offline-label={offlineLabel}
+  data-live-live-label={liveLabel}
+  role="status"
+  aria-live="polite"
+>
+  <span class="live-signal" aria-hidden="true"></span>
+  <span
+    class="inline-flex w-fit items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-cyan-200/90"
+    data-live-label
+  >
+    {offlineLabel}
+  </span>
+</div>
+
+<script>
+  const LIVE_ENDPOINT = "/api/twitch/live";
+  const POLL_INTERVAL_MS = 60_000;
+  const SIGNAL_SELECTOR = "[data-live-signal]";
+
+  let pollId: number | undefined;
+  let request: AbortController | undefined;
+  let started = false;
+
+  function isLivePayload(value: unknown): value is { live: boolean } {
+    return (
+      typeof value === "object" &&
+      value !== null &&
+      "live" in value &&
+      typeof value.live === "boolean"
+    );
+  }
+
+  function setLive(live: boolean): void {
+    document.querySelectorAll<HTMLElement>(SIGNAL_SELECTOR).forEach((signal) => {
+      const label = live
+        ? (signal.dataset.liveLiveLabel ?? "Estamos en vivo")
+        : (signal.dataset.liveOfflineLabel ?? "Offline");
+
+      signal.dataset.live = String(live);
+
+      const text = signal.querySelector<HTMLElement>("[data-live-label]");
+      if (text) text.textContent = label;
+    });
+  }
+
+  async function refresh(): Promise<void> {
+    if (!document.querySelector(SIGNAL_SELECTOR)) return;
+
+    request?.abort();
+    const controller = new AbortController();
+    request = controller;
+
+    try {
+      const response = await fetch(LIVE_ENDPOINT, {
+        signal: controller.signal,
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) return;
+
+      const payload: unknown = await response.json();
+      if (isLivePayload(payload)) {
+        setLive(payload.live);
+      }
+    } catch (error) {
+      // Keep the last known state on transient failures.
+      if (!controller.signal.aborted) {
+        console.warn("Unable to refresh Twitch live status", error);
+      }
+    } finally {
+      if (request === controller) request = undefined;
+    }
+  }
+
+  function stopPolling(): void {
+    started = false;
+
+    if (pollId !== undefined) {
+      window.clearInterval(pollId);
+      pollId = undefined;
+    }
+
+    request?.abort();
+    request = undefined;
+  }
+
+  function startPolling(): void {
+    if (started || !document.querySelector(SIGNAL_SELECTOR)) return;
+
+    started = true;
+    void refresh();
+    pollId = window.setInterval(() => void refresh(), POLL_INTERVAL_MS);
+  }
+
+  // The initial page load does not always fire `astro:page-load` in every
+  // setup, so start once directly and dedupe with the `started` flag.
+  startPolling();
+  document.addEventListener("astro:page-load", startPolling);
+  document.addEventListener("astro:before-swap", stopPolling);
+</script>
+
+<style>
+  .live-signal {
+    display: inline-block;
+    width: 0.625rem;
+    height: 0.625rem;
+    flex: none;
+    border-radius: 9999px;
+    background-color: rgb(148 163 184 / 0.35);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    transition:
+      background-color 180ms ease,
+      box-shadow 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .live-signal-group[data-live="true"] .live-signal {
+    background-color: #ef4444;
+    box-shadow:
+      0 0 0 3px rgb(239 68 68 / 0.22),
+      0 0 12px 2px rgb(239 68 68 / 0.65);
+    animation: live-signal-pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes live-signal-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.55;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-signal-group[data-live="true"] .live-signal {
+      animation: none;
+    }
+  }
+</style>

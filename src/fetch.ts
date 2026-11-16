@@ -15,6 +15,7 @@ import { HttpError } from "./api/errors/http-error";
 // import testRoutes from "@/api/routes/test"
 import goalsRoutes from "@/api/routes/goals";
 import authRoutes from './api/routes/auth';
+import twitchRoutes from "@/api/routes/twitch";
 
 
 const app = new Hono<AppEnv>();
@@ -45,6 +46,7 @@ app.notFound((c) => {
 // app.route("/api/test", testRoutes);
 app.route("/api/goals", goalsRoutes);
 app.route("/api/auth", authRoutes);
+app.route("/api/twitch", twitchRoutes);
 
 app.use(sessions());
 app.use(actions());

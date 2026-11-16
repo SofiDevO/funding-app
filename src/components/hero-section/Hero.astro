@@ -1,0 +1,57 @@
+---
+import Title from "../shared/Title.astro";
+import LiveSignal from "./LiveSignal.astro";
+---
+
+<section
+  id="apoyar"
+  class="hero flex flex-col justify-center items-center w-full p-4 h-full min-h-[50dvh]"
+>
+  <div class="w-full max-w-300 flex items-center gap-10 justify-around relative flex-col md:flex-row">
+    <div class="flex flex-col gap-5 max-w-2xl text-left">
+      <LiveSignal />
+      <Title
+        class="text-left leading-tight"
+        title="Haz posible más contenido, más momentos y más comunidad"
+        isGradient
+      />
+      <p class="max-w-xl text-base text-white/80 md:text-lg">
+        Tu apoyo me ayuda a seguir creando videos, transmisiones y proyectos con
+        más libertad. Puedes aportar con una donación a una meta, invitarme un
+        snack o dejar un mensaje que en vivo puede sonar en voz sintetizada para
+        celebrar la comunidad.
+      </p>
+      <div class="flex flex-wrap gap-3 pt-2">
+        <a
+          href="#metas"
+          class="inline-flex items-center justify-center rounded-full bg-linear-to-r from-blue-500 via-violet-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:scale-[1.02]"
+        >
+          Ver metas
+        </a>
+
+      </div>
+      <div class="flex flex-wrap items-center gap-3 pt-2 text-sm text-white/70">
+        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+          Meta activa
+        </span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+          Snack de apoyo
+        </span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">
+          Mensaje en vivo
+        </span>
+      </div>
+    </div>
+    <div class="image-container relative w-full max-w-104 overflow-hidden rounded-4xl border border-white/10 bg-white/5 p-3 shadow-2xl shadow-violet-500/10">
+      <div
+        class="absolute inset-0 bg-linear-to-br from-cyan-500/15 via-transparent to-violet-500/20"
+        aria-hidden="true"
+      ></div>
+      <img
+        class="relative w-full rounded-3xl object-cover"
+        src="/image/sofi-cat.png"
+        alt="Hero banner image"
+      />
+    </div>
+  </div>
+</section>

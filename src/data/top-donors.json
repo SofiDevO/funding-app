@@ -1,0 +1,44 @@
+[
+  {
+    "userName": "Miguenlin",
+    "profilePicture": "/image/profile.png",
+    "total": 145.5,
+    "donationCount": 7,
+    "lastDonationAt": "2026-11-16 20:14:00"
+  },
+  {
+    "userName": "SofiDevFan",
+    "profilePicture": "/image/profile.png",
+    "total": 120,
+    "donationCount": 4,
+    "lastDonationAt": "2026-11-15 18:42:00"
+  },
+  {
+    "userName": "ElGatoDeSofi",
+    "profilePicture": null,
+    "total": 95.5,
+    "donationCount": 5,
+    "lastDonationAt": "2026-11-14 21:05:00"
+  },
+  {
+    "userName": "CamilaDev",
+    "profilePicture": "/image/profile.png",
+    "total": 80,
+    "donationCount": 3,
+    "lastDonationAt": "2026-11-12 19:30:00"
+  },
+  {
+    "userName": "Anónimo",
+    "profilePicture": null,
+    "total": 60,
+    "donationCount": 2,
+    "lastDonationAt": "2026-11-10 22:18:00"
+  },
+  {
+    "userName": "KevinRust",
+    "profilePicture": "/image/profile.png",
+    "total": 45,
+    "donationCount": 1,
+    "lastDonationAt": "2026-11-08 16:55:00"
+  }
+]

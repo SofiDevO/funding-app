@@ -35,7 +35,7 @@ const menuItems = [
 
 <html lang="es">
   <head>
-    <BaseHead {description} {image} />
+    <BaseHead {description} {image} {title}/>
     <slot name="head" />
   </head>
   <GradientBg>
@@ -79,7 +79,6 @@ const menuItems = [
             </Header>
           )
         }
-
         <slot />
       </GradientBg>
     </body>
@@ -110,6 +109,7 @@ const menuItems = [
     }
     .header-bg {
       background: rgba(0, 0, 0, 0.786);
+      backdrop-filter: blur(12px);
     }
   }
 </style>

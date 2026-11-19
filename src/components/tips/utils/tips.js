@@ -1,8 +1,7 @@
-// Interacción del carrusel de tips: solo frontend, con la data del JSON mock.
-// El botón "Invitar" queda como hook (`data-tip-invite`) hasta que exista el checkout.
+// Interaccion del carrusel de tips: solo frontend, con la data del JSON mock.
+// El boton "Invitar" queda como hook (`data-tip-invite`) hasta que exista el checkout.
 
-const MIN_QUANTITY = 1;
-const MAX_QUANTITY = 20;
+import { MAX_QUANTITY, MIN_QUANTITY } from "./quantity";
 
 const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -13,7 +12,7 @@ function clampQuantity(value) {
   return Math.min(MAX_QUANTITY, Math.max(MIN_QUANTITY, value));
 }
 
-function initTipCards() {
+export function initTipCards() {
   document.querySelectorAll("[data-tip-card]").forEach((card) => {
     // Evita inicializar dos veces la misma card (View Transitions).
     if (card.dataset.tipInit) return;
@@ -53,7 +52,6 @@ function initTipCards() {
 
     minusButton?.addEventListener("click", () => step(-1));
     plusButton?.addEventListener("click", () => step(1));
-
     render();
   });
 }

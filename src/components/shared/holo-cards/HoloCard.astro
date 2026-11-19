@@ -7,7 +7,7 @@ const { cardImage = "/image/sofi-cat.png" } = Astro.props;
 const cardImageValue = `url("${cardImage}")`;
 
 ---
-<div class="holographic-card__wrapper">
+<div class="holographic-card__wrapper" transition:name="donor-card">
   <div class="holographic-card max-w-95 border border-white/10 bg-white/5 p-3 shadow-2xl shadow-violet-500/10">
     <div
       class="absolute inset-0 -z-1 bg-linear-to-br from-cyan-500/15 via-transparent to-violet-500/20"

@@ -1,0 +1,37 @@
+---
+import Title  from '../Title.astro';
+
+interface Comment {
+  profilePicture?: string;
+  userName: string;
+  message: string;
+}
+
+interface Props {
+    comments: Comment[]
+}
+
+const {comments} = Astro.props;
+
+
+---
+
+{comments.map((comment) => (
+  <article class="flex flex-col gap-3 bg-slate-500/20 hover:bg-amethyst-600/20 backdrop-blur-2xl transition-colors ease-in-out px-4 py-2 rounded-lg">
+    <div class="flex items-center gap-1">
+      <div class="rounded-full w-8 h-8 overflow-hidden shadow-md">
+        <img
+          src={comment.profilePicture || "/image/resources/default_user.avif"}
+          alt={`Profile picture from ${comment.userName}`}
+          class="object-cover w-full h-full"
+        />
+      </div>
+      <Title
+        as="h3"
+        class="text-xs text-left text-white font-bold"
+        title={`@${comment.userName}`}
+      />
+    </div>
+    <p class="text-white text-sm text-pretty italic">{comment.message}</p>
+  </article>
+))}

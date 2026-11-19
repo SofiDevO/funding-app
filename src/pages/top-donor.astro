@@ -2,7 +2,9 @@
 import Layout from "@/layouts/Layout.astro";
 import Title from "@/components/shared/Title.astro";
 import topDonors from "@/data/top-donors.json";
+import donorMessages from "@/data/messages.json";
 import { formatCurrency, formatDate, toIsoDateTime } from "@/lib/format";
+import CommentCard from "@/components/shared/comments/CommentCard.astro";
 
 interface TopDonor {
   userName: string;
@@ -11,12 +13,19 @@ interface TopDonor {
   donationCount: number;
   lastDonationAt: string;
 }
+interface donorMessages {
+  userName: string;
+  profilePicture: string;
+  message: string;
+  createdAt: string;
+}
 
 const donors = topDonors as TopDonor[];
+const comments = donorMessages as donorMessages[];
 ---
 
 <Layout title="Top Donantes">
-  <main class="h-full w-full flex items-center justify-center min-h-screen px-3 py-2 pt-20">
+  <main class="h-full w-full flex gap-4 min-h-screen px-3 py-2 pt-20">
     <section
       class="donor-table"
       aria-label="Top donantes"
@@ -95,9 +104,11 @@ const donors = topDonors as TopDonor[];
       </div>
     </section>
 
-    <section class="comment-strip flex flex-col p-2 gap-2 justify-start">
-        <Title as="h2" title="Comentarios recientes" isGradient/>
-
+    <section
+      class="comment-strip flex flex-col p-2 gap-4 h-full max-h-screen overflow-auto scrollbar-none"
+      transition:name="donor-card"
+    >
+      <CommentCard comments={comments} />
     </section>
   </main>
 </Layout>
@@ -106,6 +117,7 @@ const donors = topDonors as TopDonor[];
   .donor-table {
     width: 100%;
     max-width: 56rem;
+    height: 100%;
     padding: 1.5rem;
     border: 1px solid rgb(255 255 255 / 10%);
     border-radius: 1rem;

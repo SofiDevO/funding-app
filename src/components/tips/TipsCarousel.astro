@@ -1,0 +1,86 @@
+---
+import tipsData from "@/data/tips.json";
+import Title from "@/components/shared/Title.astro";
+import InfiniteCarousel from "@/components/infiniteCarousel/InfiniteCarousel.astro";
+import { repeatItems } from "@/components/infiniteCarousel/utils/repeat-items";
+import TipItem from "./TipItem.astro";
+
+interface TipRow {
+  id: string;
+  title: string;
+  product_name: string;
+  product_image: string;
+  price: number;
+  status: "active" | "inactive";
+  sort_order: number;
+}
+
+interface Tip {
+  id: string;
+  title: string;
+  productName: string;
+  productImage: string;
+  price: number;
+  status: "active" | "inactive";
+  sortOrder: number;
+}
+
+// El mock imita la fila de D1: se filtra por status y se ordena por sort_order.
+const tips: Tip[] = (tipsData as TipRow[])
+  .filter((row) => row.status === "active")
+  .sort((a, b) => a.sort_order - b.sort_order)
+  .map((row) => ({
+    id: row.id,
+    title: row.title,
+    productName: row.product_name,
+    productImage: row.product_image,
+    price: row.price,
+    status: row.status,
+    sortOrder: row.sort_order,
+  }));
+
+// 3 sets para que el loop del marquee sea continuo.
+const loop = repeatItems(tips);
+---
+
+{
+  tips.length > 0 && (
+    <InfiniteCarousel
+      id="tips"
+      class="tips-carousel"
+      aria-label="Regálame algo"
+      itemCount={tips.length}
+    >
+      <Fragment slot="header">
+        <Title
+          as="h2"
+          class="tips-carousel__title text-lg"
+          title="Invitame un snack"
+          isGradient
+        />
+      </Fragment>
+
+      {loop.map((tip) => (
+        <TipItem
+          id={tip.id}
+          productName={tip.productName}
+          productImage={tip.productImage}
+          price={tip.price}
+        />
+      ))}
+    </InfiniteCarousel>
+  )
+}
+
+<style>
+  .tips-carousel__title {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+</style>
+
+<script >
+  import "@/components/tips/utils/tips.js";
+</script>

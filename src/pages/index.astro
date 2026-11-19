@@ -3,7 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import GoalsCard from "@/components/goals/GoalsCard.astro";
 import goals from "@/data/goals.json";
 import Title from "@/components/shared/Title.astro";
-import InfiniteCarousel from "@/components/infiniteCarousel/InfiniteCarousel.astro";
+import TipsCarousel from "@/components/tips/TipsCarousel.astro";
 import Hero from "@/components/hero-section/Hero.astro";
 export const prerender = true;
 ---
@@ -11,7 +11,9 @@ export const prerender = true;
 <Layout>
   <main class="flex flex-col items-center justify-center h-full min-h-screen w-full max-w-300 mx-auto px-8 pb-12 pt-14">
     <Hero />
-
+    <section class="flex flex-col items-center justify-center w-full h-full">
+      <TipsCarousel server:defer />
+    </section>
     <section
       id="metas"
       class="flex flex-col w-full h-ful gap-4 items-center justify-center"
@@ -29,9 +31,6 @@ export const prerender = true;
           />
         ))}
       </div>
-    </section>
-    <section class="flex flex-col items-center justify-center w-full h-full">
-      <InfiniteCarousel />
     </section>
   </main>
 </Layout>

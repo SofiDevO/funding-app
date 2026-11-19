@@ -1,0 +1,59 @@
+---
+/**
+ * Item de `InfiniteCarousel`.
+ *
+ * Agrega siempre la clase estandar `infinite-carousel__item` (de la que depende
+ * la pausa del track) y concentra los estilos de la caja del item: tamano,
+ * rotacion, hover y foco. El contenido llega por el slot por defecto.
+ *
+ * Cualquier atributo extra (`data-*`, `aria-*`, `tabindex`, `class`...) se
+ * esparce en el elemento raiz.
+ */
+import type { HTMLAttributes } from "astro/types";
+import { twMerge } from "tailwind-merge";
+
+type Props = HTMLAttributes<"article"> & {
+  /** Etiqueta HTML del item. */
+  as?: "article" | "div" | "li";
+  class?: string;
+};
+
+const { as: Tag = "article", class: className, ...rest } = Astro.props;
+---
+
+<Tag class={twMerge("infinite-carousel__item", className)} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .infinite-carousel__item {
+    position: relative;
+    display: flex;
+    flex: 0 0 var(--item-size);
+    justify-content: center;
+    align-items: center;
+    width: var(--item-size);
+    height: var(--item-size);
+    padding: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    transform: rotate(5deg);
+
+    &:hover,
+    &:focus-visible {
+      background: #51168880;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-amethyst-300);
+      outline-offset: 2px;
+    }
+
+    /* El item hovered manda: su contenido queda por encima de los vecinos. */
+    &:hover,
+    &:focus-within {
+      z-index: 3;
+    }
+  }
+</style>

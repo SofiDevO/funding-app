@@ -23,10 +23,12 @@ interface donorMessages {
 
 const donors = topDonors as TopDonor[];
 const comments = donorMessages as donorMessages[];
+
+
 ---
 
 <Layout title="Top Donantes">
-  <main class="h-full w-full flex gap-4 min-h-screen px-3 py-2 pt-20">
+  <main class="h-full w-full flex  justify-center gap-4 min-h-screen px-3 py-2 pt-20">
     <section
       class="donor-table"
       aria-label="Top donantes"
@@ -106,7 +108,7 @@ const comments = donorMessages as donorMessages[];
     </section>
 
     <section
-      class="comment-strip flex flex-col p-2 gap-4 h-full max-h-screen overflow-auto scrollbar-none"
+      class="comment-strip flex flex-col p-2 gap-4 h-full max-h-145 overflow-auto scrollbar-none"
       transition:name="donor-card"
     >
       <CommentCard comments={comments} />

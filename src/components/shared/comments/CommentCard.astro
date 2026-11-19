@@ -1,38 +1,66 @@
 ---
-import Title  from '../Title.astro';
+import Title from "../Title.astro";
 
 interface Comment {
   profilePicture?: string | null;
   userName: string;
   message: string;
-  amount?: number;
+  amount: number;
 }
 
 interface Props {
-    comments: Comment[]
+  comments: Comment[];
 }
 
-const {comments} = Astro.props;
+const currency = new Intl.NumberFormat("es-ES", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
 
+const tierColors = ["#00c950", "#ffb900", "#ff8904", "#ff6467"];
 
+const { comments } = Astro.props;
 ---
 
-{comments.map((comment) => (
-  <article class="flex flex-col gap-3 bg-slate-500/20 hover:bg-amethyst-600/20 backdrop-blur-2xl transition-colors ease-in-out px-4 py-2 rounded-lg">
-    <div class="flex items-center gap-1">
-      <div class="rounded-full w-8 h-8 overflow-hidden shadow-md">
-        <img
-          src={comment.profilePicture || "/image/resources/default_user.avif"}
-          alt={`Profile picture from ${comment.userName}`}
-          class="object-cover w-full h-full"
-        />
+{comments.map((comment) => {
+  let color;
+  if (comment.amount > 20) {
+    color = tierColors[3];
+  } else if (comment.amount > 10) {
+    color = tierColors[2];
+  } else if (comment.amount > 5) {
+    color = tierColors[1];
+  } else if (comment.amount >= 1) {
+    color = tierColors[0];
+  }
+  return (
+    <article
+      class={`comment-card flex flex-col gap-3 backdrop-blur-2xl hover:bg-${color}-600/20 transition-colors ease-in-out px-4 py-2 rounded-lg`}
+      style={`background-image: linear-gradient(to right,  rgb(140 106 217 / 20%), rgb(106, 66, 181 ,10%),  color-mix(in srgb, ${color} 22%, transparent));`}
+    >
+      <div class="flex items-center gap-1 justify-between bg-">
+        <div class="flex items-center gap-2">
+          <div class="rounded-full w-8 h-8 overflow-hidden shadow-md">
+            <img
+              src={
+                comment.profilePicture || "/image/resources/default_user.avif"
+              }
+              alt={`Profile picture from ${comment.userName}`}
+              class="object-cover w-full h-full"
+            />
+          </div>
+          <Title
+            as="h3"
+            class="text-xs text-left text-white font-bold"
+            title={`@${comment.userName}`}
+          />
+        </div>
+        <div class={`py-1 px-3  rounded-md`} style={`background-color:color-mix(${color} 20%, transparent); border:0.5px solid ${color} `}>
+          <span class="text-white" style={`color:${color}`} >{currency.format(comment.amount || 0)}</span>
+        </div>
       </div>
-      <Title
-        as="h3"
-        class="text-xs text-left text-white font-bold"
-        title={`@${comment.userName}`}
-      />
-    </div>
-    <p class="text-white text-sm text-pretty italic">{comment.message}</p>
-  </article>
-))}
+      <p class="text-white text-sm text-pretty italic">{comment.message}</p>
+    </article>
+  );
+})}

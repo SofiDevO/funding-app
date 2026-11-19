@@ -3,60 +3,70 @@
     "userName": "Miguenlin",
     "profilePicture": "/image/profile.png",
     "message": "Con esto cae el emparedado. Gracias por tantas horas de stream, Sofi.",
+    "amount": 5,
     "createdAt": "2026-11-17 13:20:00"
   },
   {
     "userName": "CamilaDev",
     "profilePicture": "/image/profile.png",
     "message": "Tu contenido me ayudó a conseguir mi primer trabajo como dev. Sigue así.",
+    "amount": 10,
     "createdAt": "2026-11-16 21:45:00"
   },
   {
     "userName": "SofiDevFan",
     "profilePicture": "/image/profile.png",
     "message": "El directo de ayer estuvo increíble. Aquí va mi granito de arena para la bici.",
+    "amount": 2,
     "createdAt": "2026-11-16 18:10:00"
   },
   {
     "userName": "Anónimo",
     "profilePicture": null,
     "message": "No tengo cuenta pero siempre veo los streams. Mucha suerte con la meta.",
+    "amount": 1,
     "createdAt": "2026-11-15 23:05:00"
   },
   {
     "userName": "ElGatoDeSofi",
     "profilePicture": null,
     "message": "Los libros van a rendir. Queremos ver ese tutorial de arquitectura.",
+    "amount": 15,
     "createdAt": "2026-11-15 17:30:00"
   },
   {
     "userName": "KevinRust",
     "profilePicture": "/image/profile.png",
     "message": "Gracias por explicar Rust sin humo. Merecido aporte.",
+    "amount": 20,
     "createdAt": "2026-11-14 20:12:00"
   },
   {
     "userName": "LunaByte",
     "profilePicture": "/image/profile.png",
     "message": "Sofi, tu stream es mi compañía mientras programo. Gracias por todo.",
+    "amount": 5,
     "createdAt": "2026-11-13 22:40:00"
   },
   {
     "userName": "DevMichi",
     "profilePicture": null,
     "message": "Que se cumpla la meta del huerto, quiero ver fotos de la cosecha.",
+    "amount": 10,
     "createdAt": "2026-11-12 19:15:00"
   },
   {
     "userName": "PixelPan",
     "profilePicture": "/image/profile.png",
     "message": "Llevo meses siguiéndote y por fin pude donar. Sigue creando.",
+    "amount": 3,
     "createdAt": "2026-11-11 21:00:00"
   },
   {
     "userName": "NinaCode",
     "profilePicture": "/image/profile.png",
     "message": "El detalle de explicar cada error en vivo vale oro. Éxitos con la meta.",
+    "amount": 2,
     "createdAt": "2026-11-10 18:25:00"
   }
 ]

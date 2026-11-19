@@ -2,9 +2,10 @@
 import Title  from '../Title.astro';
 
 interface Comment {
-  profilePicture?: string;
+  profilePicture?: string | null;
   userName: string;
   message: string;
+  amount?: number;
 }
 
 interface Props {

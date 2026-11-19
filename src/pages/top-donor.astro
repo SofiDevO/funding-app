@@ -15,8 +15,9 @@ interface TopDonor {
 }
 interface donorMessages {
   userName: string;
-  profilePicture: string;
+  profilePicture: string | null;
   message: string;
+  amount: number;
   createdAt: string;
 }
 

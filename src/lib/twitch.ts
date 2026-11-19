@@ -7,8 +7,9 @@ const TOKEN_REQUEST_TIMEOUT_MS = 10_000;
 const LIVE_STATUS_REQUEST_TIMEOUT_MS = 10_000;
 
 // Keep client polls from hitting the Helix API on every request. The cache is
-// per isolate and only stores public stream status.
-const LIVE_STATUS_CACHE_MS = 30_000;
+// per isolate and only stores public stream status. Aligned with the edge cache
+// TTL in the route so both layers agree on freshness.
+const LIVE_STATUS_CACHE_MS = 60_000;
 
 // Refresh the token slightly before it expires so requests never use it at
 // the boundary. The ratio covers short-lived tokens; the cap prevents

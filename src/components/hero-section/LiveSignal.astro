@@ -32,7 +32,9 @@ const liveLabel = "Estamos en vivo";
 
 <script>
   const LIVE_ENDPOINT = "/api/twitch/live";
-  const POLL_INTERVAL_MS = 60_000;
+  // Poll less aggressively and only while the tab is visible to avoid burning
+  // the Twitch API quota (the backend edge-caches the result for 60 s anyway).
+  const POLL_INTERVAL_MS = 120_000;
   const SIGNAL_SELECTOR = "[data-live-signal]";
 
   let pollId: number | undefined;
@@ -103,10 +105,24 @@ const liveLabel = "Estamos en vivo";
 
   function startPolling(): void {
     if (started || !document.querySelector(SIGNAL_SELECTOR)) return;
+    // Do not burn quota polling a background tab.
+    if (document.visibilityState !== "visible") return;
 
     started = true;
     void refresh();
-    pollId = window.setInterval(() => void refresh(), POLL_INTERVAL_MS);
+    pollId = window.setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      void refresh();
+    }, POLL_INTERVAL_MS);
+  }
+
+  function handleVisibilityChange(): void {
+    if (document.visibilityState === "visible") {
+      if (!started) startPolling();
+      else void refresh();
+    } else {
+      stopPolling();
+    }
   }
 
   // The initial page load does not always fire `astro:page-load` in every
@@ -114,6 +130,7 @@ const liveLabel = "Estamos en vivo";
   startPolling();
   document.addEventListener("astro:page-load", startPolling);
   document.addEventListener("astro:before-swap", stopPolling);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
 </script>
 
 <style>

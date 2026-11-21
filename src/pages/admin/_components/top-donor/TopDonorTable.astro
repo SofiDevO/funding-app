@@ -1,0 +1,274 @@
+---
+import { formatCurrency, formatDate, toIsoDateTime } from "@/lib/format";
+import Title from "@/components/shared/Title.astro";
+interface DonorData {
+  userName: string;
+  profilePicture: string | null;
+  total: number;
+  donationCount: number;
+  lastDonationAt: string;
+}
+
+interface Props {
+  donors: DonorData[];
+  getTierColors: (quantity: number) => string;
+}
+
+const { donors, getTierColors } = Astro.props as Props;
+---
+
+<section
+  class="donor-table"
+  aria-label="Top donantes"
+  transition:name="top-donor-title"
+  transition:persist
+>
+  <header class="donor-table__header">
+    <div class="flex flex-col gap-1">
+      <Title as="h2" title="Top donantes" class="text-left" isGradient />
+      <p class="donor-table__subtitle">
+        Quienes sostienen el canal con sus aportes.
+      </p>
+    </div>
+    <span class="donor-table__badge">{donors.length} donantes</span>
+  </header>
+
+  <div
+    class="donor-table__scroll"
+    role="region"
+    aria-label="Ranking de donantes"
+    tabindex="0"
+  >
+    <table>
+      <caption class="visually-hidden">
+        Ranking de donantes por monto acumulado
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Donante</th>
+          <th scope="col">Total</th>
+          <th scope="col">Donaciones</th>
+          <th scope="col">Última donación</th>
+        </tr>
+      </thead>
+      <tbody>
+        {donors.map((donor, index) => {
+          const color = getTierColors(donor.total);
+          return (
+            <tr>
+              <td>
+                <span
+                  class={`rank${index === 0 ? " rank--first" : index < 3 ? " rank--podium" : ""}`}
+                >
+                  {index + 1}
+                </span>
+              </td>
+              <td>
+                <div class="donor">
+                  <img
+                    class="donor__avatar"
+                    src={donor.profilePicture ?? "/image/profile.png"}
+                    alt=""
+                    width="40"
+                    height="40"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="donor__name">{donor.userName}</span>
+                </div>
+              </td>
+              <td class="donor-table__total" style={`color:${color}`}>
+                {formatCurrency(donor.total)}
+              </td>
+              <td>{donor.donationCount}</td>
+              <td>
+                <time
+                  class="donor-table__date"
+                  datetime={toIsoDateTime(donor.lastDonationAt) ?? undefined}
+                >
+                  {formatDate(donor.lastDonationAt)}
+                </time>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .donor-table {
+    width: 100%;
+    max-width: 56rem;
+    height: 100%;
+    padding: 1.5rem;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: 1rem;
+    background: #974dd01c;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 30px 60px -35px #000000e6;
+  }
+
+  .donor-table__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .donor-table__subtitle {
+    margin: 0;
+    color: rgb(255 255 255 / 55%);
+    font-size: 0.875rem;
+  }
+
+  .donor-table__badge {
+    flex: none;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 4%);
+    color: rgb(255 255 255 / 60%);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .donor-table__scroll {
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    scrollbar-color: var(--color-amethyst-500) transparent;
+  }
+
+  .donor-table__scroll:focus-visible {
+    outline: 2px solid var(--color-amethyst-500);
+    outline-offset: 3px;
+  }
+
+  .donor-table table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .donor-table th {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgb(255 255 255 / 10%);
+    color: rgb(255 255 255 / 45%);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .donor-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgb(255 255 255 / 6%);
+    color: rgb(255 255 255 / 70%);
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+
+  .donor-table tbody tr {
+    transition: background-color 150ms ease;
+  }
+
+  .donor-table tbody tr:hover {
+    background: rgb(170 104 223 / 8%);
+  }
+
+  .donor-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 6%);
+    color: rgb(255 255 255 / 60%);
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rank--podium {
+    background: rgb(170 104 223 / 15%);
+    color: var(--color-amethyst-300);
+  }
+
+  .rank--first {
+    background: linear-gradient(
+      135deg,
+      var(--color-amethyst-500),
+      var(--color-amethyst-900)
+    );
+    color: white;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 12%),
+      0 8px 20px -8px rgb(170 104 223 / 70%);
+  }
+
+  .donor {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .donor__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: 0 0 2.5rem;
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 6%);
+    object-fit: cover;
+  }
+
+  .donor__name {
+    color: white;
+    font-weight: 600;
+  }
+
+  .donor-table__total {
+    color: var(--color-amethyst-300);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .donor-table__date {
+    color: rgb(255 255 255 / 50%);
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 640px) {
+    .donor-table {
+      padding: 1rem;
+    }
+
+    .donor-table__header {
+      flex-direction: column;
+    }
+  }
+</style>

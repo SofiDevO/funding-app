@@ -10,6 +10,7 @@ interface Comment {
 
 interface Props {
   comments: Comment[];
+  getTierColors: (quantity: number) => string;
 }
 
 const currency = new Intl.NumberFormat("es-ES", {
@@ -18,49 +19,52 @@ const currency = new Intl.NumberFormat("es-ES", {
   maximumFractionDigits: 0,
 });
 
-const tierColors = ["#00c950", "#ffb900", "#ff8904", "#ff6467"];
-
-const { comments } = Astro.props;
+const { comments, getTierColors } = Astro.props;
 ---
 
-{comments.map((comment) => {
-  let color;
-  if (comment.amount > 20) {
-    color = tierColors[3];
-  } else if (comment.amount > 10) {
-    color = tierColors[2];
-  } else if (comment.amount > 5) {
-    color = tierColors[1];
-  } else if (comment.amount >= 1) {
-    color = tierColors[0];
-  }
-  return (
-    <article
-      class={`comment-card flex flex-col gap-3 backdrop-blur-2xl hover:bg-${color}-600/20 transition-colors ease-in-out px-4 py-2 rounded-lg`}
-      style={`background-image: linear-gradient(to right,  rgb(140 106 217 / 20%), rgb(106, 66, 181 ,10%),  color-mix(in srgb, ${color} 22%, transparent));`}
-    >
-      <div class="flex items-center gap-1 justify-between bg-">
-        <div class="flex items-center gap-2">
-          <div class="rounded-full w-8 h-8 overflow-hidden shadow-md">
-            <img
-              src={
-                comment.profilePicture || "/image/resources/default_user.avif"
-              }
-              alt={`Profile picture from ${comment.userName}`}
-              class="object-cover w-full h-full"
+<section
+  class="comment-strip flex flex-col p-2 gap-4 h-full max-h-145 overflow-auto scrollbar-none"
+  transition:name="donor-card"
+>
+  {comments.map((comment) => {
+    const color = getTierColors(comment.amount);
+    return (
+      <article
+        class="comment-card flex flex-col gap-5 transition-colors ease-in-out p-4 rounded-lg"
+        style={`background-image: linear-gradient(to right, rgb(140 66 217 / 20%), rgb(106 66 181 / 10%), color-mix(in srgb, ${color} 22%, transparent)); border: 1px solid rgb(255 255 255 / 10%);`}
+      >
+        <div class="flex items-center gap-1 justify-between bg-">
+          <div class="flex items-center gap-2">
+            <div class="rounded-full w-8 h-8 overflow-hidden shadow-md">
+              <img
+                src={
+                  comment.profilePicture || "/image/resources/default_user.avif"
+                }
+                alt={`Profile picture from ${comment.userName}`}
+                class="object-cover w-full h-full"
+              />
+            </div>
+            <Title
+              as="h3"
+              class="text-xs text-left text-white font-bold"
+              title={`@${comment.userName}`}
             />
           </div>
-          <Title
-            as="h3"
-            class="text-xs text-left text-white font-bold"
-            title={`@${comment.userName}`}
-          />
+          <div
+            class={`py-1 px-3  rounded-md flex`}
+            style={`background-color: color-mix(in srgb, ${color} 30%, transparent); border: 0.5px solid ${color};`}
+          >
+            <span
+              class="font-bold"
+              style={`color:${color}; filter: saturate(150%);
+`}
+            >
+              {currency.format(comment.amount || 0)}
+            </span>
+          </div>
         </div>
-        <div class={`py-1 px-3  rounded-md`} style={`background-color:color-mix(${color} 20%, transparent); border:0.5px solid ${color} `}>
-          <span class="text-white" style={`color:${color}`} >{currency.format(comment.amount || 0)}</span>
-        </div>
-      </div>
-      <p class="text-white text-sm text-pretty italic">{comment.message}</p>
-    </article>
-  );
-})}
+        <p class="text-white text-sm text-pretty italic">{comment.message}</p>
+      </article>
+    );
+  })}
+</section>
